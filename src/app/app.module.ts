@@ -1,3 +1,4 @@
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFireAuthModule} from '@angular/fire/auth';
@@ -52,8 +53,13 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     AngularFireAuthModule, FirebaseUIModule.forRoot(firebaseUiAuthConfig)
   ],
   providers: [
-    StatusBar, SplashScreen, FacebookService,
-    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
+    StatusBar,
+    SplashScreen,
+    FacebookService,
+    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
+    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
+
   ],
   bootstrap: [AppComponent]
 })
