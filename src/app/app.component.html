@@ -19,6 +19,6 @@
         </ion-list>
       </ion-content>
     </ion-menu>
-    <ion-router-outlet main></ion-router-outlet>
+    <ion-router-outlet main (activate)="!!$event.pageWillEnter ? $event.pageWillEnter() : undefined"></ion-router-outlet>
   </ion-split-pane>
 </ion-app>
