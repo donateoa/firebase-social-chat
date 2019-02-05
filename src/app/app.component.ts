@@ -1,6 +1,4 @@
 import {Component} from '@angular/core';
-import {SplashScreen} from '@ionic-native/splash-screen/ngx';
-import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {Platform} from '@ionic/angular';
 import * as firebase from 'firebase';
 import {environment} from 'src/environments/environment.prod';
@@ -14,16 +12,13 @@ export class AppComponent {
     {title: 'List', url: '/list', icon: 'list'}
   ];
 
-  constructor(
-      private platform: Platform, private splashScreen: SplashScreen,
-      private statusBar: StatusBar) {
-    this.initializeApp();
-  }
+  constructor(private platform: Platform) { this.initializeApp(); }
 
   initializeApp() {
-    this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-    });
+    this.platform.ready().then(
+        () => {
+            // this.statusBar.styleDefault();
+            // this.splashScreen.hide();
+        });
   }
 }
