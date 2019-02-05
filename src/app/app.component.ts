@@ -10,7 +10,7 @@ export class AppComponent {
   user$: Observable<any>;
   public appPages = [
     {title: 'Home', url: '/home', icon: 'home'},
-    {title: 'List', url: '/list', icon: 'list'}
+    {title: 'Contatcts', url: '/contacts', icon: 'contacts'}
   ];
 
   constructor(

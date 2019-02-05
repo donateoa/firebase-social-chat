@@ -13,6 +13,7 @@ import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
 // - https://github.com/RaphaelJenni/FirebaseUI-Angular/issues/76
 // the plugin exposes the two libraries as well. You can use those:
 import {FirebaseUIModule, firebase, firebaseui} from 'firebaseui-angular';
+import {FacebookService} from 'ngx-facebook';
 import {environment} from 'src/environments/environment.prod';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -51,7 +52,7 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     AngularFireAuthModule, FirebaseUIModule.forRoot(firebaseUiAuthConfig)
   ],
   providers: [
-    StatusBar, SplashScreen,
+    StatusBar, SplashScreen, FacebookService,
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
   ],
   bootstrap: [AppComponent]

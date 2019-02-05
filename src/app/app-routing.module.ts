@@ -8,8 +8,11 @@ const routes: Routes = [
     loadChildren: './home/home.module#HomePageModule',
     canActivate: [AuthGuardService]
   },
-  {path: 'list', loadChildren: './list/list.module#ListPageModule'},
-  {path: 'login', loadChildren: './pages/login/login.module#LoginPageModule'}
+  {path: 'login', loadChildren: './pages/login/login.module#LoginPageModule'}, {
+    path: 'contacts',
+    loadChildren: './pages/contacts/contacts.module#ContactsPageModule',
+    canActivate: [AuthGuardService]
+  }
 ];
 
 @NgModule({imports: [RouterModule.forRoot(routes)], exports: [RouterModule]})
