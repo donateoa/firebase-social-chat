@@ -1,7 +1,7 @@
 <ion-app>
   <ion-split-pane>
     <ion-menu>
-      <ion-header>
+      <ion-header *ngIf="authenticated$ | async">
         <ion-toolbar>
           <ion-title>Menu</ion-title>
         </ion-toolbar>

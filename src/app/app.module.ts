@@ -36,7 +36,7 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
       scopes: ['public_profile', 'email', 'user_likes', 'user_friends'],
     }
   ],
-  tosUrl: '<your-tos-link>',
+  tosUrl: '/home',
   privacyPolicyUrl: '<your-privacyPolicyUrl-link>',
   credentialHelper: firebaseui.auth.CredentialHelper.ACCOUNT_CHOOSER_COM
 };

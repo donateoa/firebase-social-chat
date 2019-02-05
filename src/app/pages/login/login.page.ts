@@ -1,5 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
+import {Router} from '@angular/router';
 import {FirebaseUISignInFailure, FirebaseUISignInSuccessWithAuthResult} from 'firebaseui-angular';
 import {Subscription} from 'rxjs';
 
@@ -8,22 +9,25 @@ import {Subscription} from 'rxjs';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnDestroy {
+export class LoginPage implements OnDestroy,
+    OnInit {
   subscription: Subscription;
-  constructor(private angularFireAuth: AngularFireAuth) {}
+  constructor(
+      private angularFireAuth: AngularFireAuth, private router: Router) {}
 
-  pageWillEnter() {
+  ngOnInit(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
 
     this.subscription = this.angularFireAuth.authState.subscribe(
-        this.firebaseAuthChangeListener);
+        (response) => this.firebaseAuthChangeListener(response));
   }
   private firebaseAuthChangeListener(response) {
     // if needed, do a redirect in here
     if (response) {
       console.log('Logged in :)');
+      this.router.navigate(['/home']);
     } else {
       console.log('Logged out :(');
     }

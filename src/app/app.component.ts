@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
+import {Router} from '@angular/router';
 import {Platform} from '@ionic/angular';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -13,7 +14,8 @@ export class AppComponent {
   ];
 
   constructor(
-      private platform: Platform, private angularFireAuth: AngularFireAuth) {
+      private platform: Platform, private angularFireAuth: AngularFireAuth,
+      private router: Router) {
     this.initializeApp();
   }
 
@@ -26,5 +28,8 @@ export class AppComponent {
     });
   }
 
-  logout() { this.angularFireAuth.auth.signOut(); }
+  logout() {
+    this.angularFireAuth.auth.signOut();
+    this.router.navigate(['/login']);
+  }
 }
