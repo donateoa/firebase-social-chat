@@ -7,7 +7,7 @@ import {map} from 'rxjs/operators';
 
 @Component({selector: 'app-root', templateUrl: 'app.component.html'})
 export class AppComponent {
-  authenticated$: Observable<boolean>;
+  user$: Observable<any>;
   public appPages = [
     {title: 'Home', url: '/home', icon: 'home'},
     {title: 'List', url: '/list', icon: 'list'}
@@ -23,8 +23,7 @@ export class AppComponent {
     this.platform.ready().then(() => {
       // this.statusBar.styleDefault();
       // this.splashScreen.hide();
-      this.authenticated$ =
-          this.angularFireAuth.authState.pipe(map(res => !!res));
+      this.user$ = this.angularFireAuth.authState;
     });
   }
 
