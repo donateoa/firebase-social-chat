@@ -17,6 +17,7 @@ import {environment} from 'src/environments/environment.prod';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
+import {ServicesModule} from './services/services.module';
 
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
   signInFlow: 'popup',
@@ -45,7 +46,7 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
-    BrowserModule, IonicModule.forRoot(), AppRoutingModule,
+    ServicesModule, BrowserModule, IonicModule.forRoot(), AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase_config),
     AngularFireAuthModule, FirebaseUIModule.forRoot(firebaseUiAuthConfig)
   ],
