@@ -13,7 +13,8 @@ const routes: Routes = [
     loadChildren: './pages/contacts/contacts.module#ContactsPageModule',
     canActivate: [AuthGuardService]
   },
-  { path: 'users', loadChildren: './pages/users/users.module#UsersPageModule' }
+  { path: 'users', loadChildren: './pages/users/users.module#UsersPageModule' },
+  { path: 'profile', loadChildren: './pages/profile/profile.module#ProfilePageModule' }
 ];
 
 @NgModule({imports: [RouterModule.forRoot(routes)], exports: [RouterModule]})
