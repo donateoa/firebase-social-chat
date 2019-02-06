@@ -3,6 +3,7 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {Router} from '@angular/router';
 import {FirebaseUISignInFailure, FirebaseUISignInSuccessWithAuthResult} from 'firebaseui-angular';
 import {Subscription} from 'rxjs';
+import {MeFacebookService} from 'src/app/services/me-facebook.service';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +14,7 @@ export class LoginPage implements OnDestroy,
     OnInit {
   subscription: Subscription;
   constructor(
+      private meFacebookService: MeFacebookService,
       private angularFireAuth: AngularFireAuth, private router: Router) {}
 
   ngOnInit(): void {
@@ -23,11 +25,13 @@ export class LoginPage implements OnDestroy,
     this.subscription = this.angularFireAuth.authState.subscribe(
         (response) => this.firebaseAuthChangeListener(response));
   }
+
   private firebaseAuthChangeListener(response) {
     // if needed, do a redirect in here
     if (response) {
-      console.log('Logged in :)');
-      this.router.navigate(['/home']);
+      console.log('Logged in as user: ', response);
+      this.meFacebookService.login().then(() => this.router.navigate(['/home']))
+
     } else {
       console.log('Logged out :(');
     }
