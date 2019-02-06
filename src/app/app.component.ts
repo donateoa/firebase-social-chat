@@ -3,11 +3,12 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {Router} from '@angular/router';
 import {Platform} from '@ionic/angular';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {VERSION} from 'src/app.constants';
 
 @Component({selector: 'app-root', templateUrl: 'app.component.html'})
 export class AppComponent {
   user$: Observable<any>;
+  version = VERSION;
   public appPages = [
     {title: 'Home', url: '/home', icon: 'home'},
     {title: 'Contatcts', url: '/contacts', icon: 'contacts'}

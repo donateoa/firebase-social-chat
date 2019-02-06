@@ -3,12 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Contacts</ion-title>
-    <ion-buttons slot="end">
-      <ion-badge color="mdium">{{numItems}}</ion-badge>
-      <ion-button href="/users">
-        <ion-icon name="add"></ion-icon>
-      </ion-button>
+    <ion-title>Users</ion-title>
     </ion-buttons>
 
   </ion-toolbar>
@@ -16,10 +11,7 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item *ngFor="let user of contacts">
-      <ion-avatar slot="start">
-        <img [src]="'https://graph.facebook.com/' + user.id + '/picture'">
-      </ion-avatar>
+    <ion-item *ngFor="let user of users">
       <ion-label>{{user.name}}</ion-label>
     </ion-item>
   </ion-list>

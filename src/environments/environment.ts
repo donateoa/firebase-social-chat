@@ -12,7 +12,8 @@ export const environment = {
     storageBucket: 'hlcm-staging.appspot.com',
     messagingSenderId: '667016465546'
   },
-  facebook_config: {appId: '363897454341848', xfbml: true, version: 'v3.2'}
+  facebook_config: {appId: '363897454341848', xfbml: true, version: 'v3.2'},
+  VERSION: '0.0.1'
 };
 
 /*
