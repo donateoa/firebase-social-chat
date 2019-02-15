@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>Contacts</ion-title>
     <ion-buttons slot="end">
-      <ion-button href="/users">
+      <ion-button routerLink="/users">
         <ion-icon name="add"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -14,21 +14,23 @@
 </ion-header>
 
 <ion-content padding>
-  <ng-container *ngIf="list as list else loading">
-    <ion-list>
+  <ion-list>
+    <ng-container *ngIf="list as list else loading">
       <ion-item *ngFor="let item of list">
-        <ion-label>{{item}}</ion-label>
+        <ion-avatar>
+          <img src="/assets/images/profile/user.svg" *ngIf="!item.photoURL">
+          <img [src]="item.photoURL" *ngIf="item.photoURL">
+        </ion-avatar>
+        <ion-label>{{item.displayName}}</ion-label>
       </ion-item>
-    </ion-list>
-  </ng-container>
-  <ng-template #loading>
-    <ion-row>
-      <ion-col text-center>
+
+    </ng-container>
+    <ng-template #loading>
+      <ion-item text-center>
         <ion-spinner></ion-spinner>
-      </ion-col>
-    </ion-row>
-  </ng-template>
-  </ion-grid>
+      </ion-item>
+    </ng-template>
+  </ion-list>
 
   <ion-infinite-scroll [disabled]="disabledInfiniteScroll" (ionInfinite)="loadData($event)" position="bottom">
     <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">

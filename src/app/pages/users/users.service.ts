@@ -12,11 +12,12 @@ import {Query} from '@angular/fire/firestore';
 import * as firebase from 'firebase/app';
 import {IFilter} from 'src/app/components/entity-filter/entity-filter.model';
 import {PAGE_SIZE} from 'src/app.constants';
+import 'firebase/functions';
 
 @Injectable({providedIn: 'root'})
 export class UsersService implements RestInterface {
   constructor(private angularFireAuth: AngularFireAuth) {}
-  lastVisible: IUser;
+  lastVisible: string;
 
   getUrl = () => of ('users');
 
@@ -45,31 +46,38 @@ export class UsersService implements RestInterface {
 
   delete (id: number|string): Observable<any> { return null; }
 
-  query(next?: boolean, filter?: IFilter): Observable<User[]> {
-    const db = firebase.firestore();
-    return this.getUrl().pipe(flatMap(url => {
-      if (!url) {
-        return [];
-      } else {
-        let listRef: Query = db.collection(url);
-        if (filter) {
-          if (filter.value) {
-            listRef =
-                listRef.where(filter.field, filter.operator, filter.value);
-          }
-          if (filter.sort) {
-            listRef = listRef.orderBy(filter.field, filter.sort);
-          }
-        }
-        if (next) {
-          listRef = listRef.startAfter(this.lastVisible)
-        }
-        return listRef.limit(PAGE_SIZE)
-            .get()
-            .then((t) => this.setLastVisible(t))
-            .then(d => d.docs.map(t => this.mapToObj(t.data())));
-      }
-    }));
+  query(next?: boolean, filter?: IFilter): Observable<any[]> {
+    const firebaseFunction = firebase.functions().httpsCallable('allUsers');
+    const that = this;
+    return from(firebaseFunction({}).then(response => {
+      that.lastVisible = response.data.pageToken;
+      return response.data.users;
+    }))
+
+    // const db = firebase.firestore();
+    // return this.getUrl().pipe(flatMap(url => {
+    //   if (!url) {
+    //     return [];
+    //   } else {
+    //     let listRef: Query = db.collection(url);
+    //     if (filter) {
+    //       if (filter.value) {
+    //         listRef =
+    //             listRef.where(filter.field, filter.operator, filter.value);
+    //       }
+    //       if (filter.sort) {
+    //         listRef = listRef.orderBy(filter.field, filter.sort);
+    //       }
+    //     }
+    //     if (next) {
+    //       listRef = listRef.startAfter(this.lastVisible)
+    //     }
+    //     return listRef.limit(PAGE_SIZE)
+    //         .get()
+    //         .then((t) => this.setLastVisible(t))
+    //         .then(d => d.docs.map(t => this.mapToObj(t.data())));
+    //   }
+    // }));
   }
   setLastVisible(documentSnapshots) {
     this.lastVisible =
