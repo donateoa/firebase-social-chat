@@ -413,16 +413,16 @@
     tslib "^1.9.0"
     typescript "^3.2.4"
 
-"@ionic/angular@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@ionic/angular/-/angular-4.0.0.tgz#5828c977f3fa30f884fad55dd97488de6a4a00d4"
+"@ionic/angular@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@ionic/angular/-/angular-4.0.1.tgz#eb5cc7bf121d82fe1e5377a1904910caa3f98f92"
   dependencies:
-    "@ionic/core" "4.0.0"
+    "@ionic/core" "4.0.1"
     tslib "^1.9.3"
 
-"@ionic/core@4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@ionic/core/-/core-4.0.0.tgz#5dd9b44c2feabd3de73a39296f1d9e9b005e4b73"
+"@ionic/core@4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@ionic/core/-/core-4.0.1.tgz#b038b10a25bf677f55a2e1aaa3276144345469b2"
   dependencies:
     ionicons "4.5.5"
 

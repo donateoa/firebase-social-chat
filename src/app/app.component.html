@@ -5,7 +5,8 @@
         <ion-header>
           <ion-toolbar padding>
             <ion-avatar>
-              <img [src]="user.photoURL">
+              <img src="/assets/images/profile/user.svg" *ngIf="!user.photoURL">
+              <img [src]="user.photoURL" *ngIf="user.photoURL">
             </ion-avatar>
             <ion-label>{{user.displayName}}</ion-label>
             <ion-text slot="end">{{version}}</ion-text>
@@ -33,6 +34,7 @@
         </ion-content>
       </ng-container>
     </ion-menu>
-    <ion-router-outlet main (activate)="!!$event.pageWillEnter ? $event.pageWillEnter() : undefined"></ion-router-outlet>
+    <ion-router-outlet main (activate)="!!$event.pageWillEnter ? $event.pageWillEnter() : undefined">
+    </ion-router-outlet>
   </ion-split-pane>
 </ion-app>

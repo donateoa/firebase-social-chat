@@ -11,9 +11,9 @@ export class AppComponent {
   version = VERSION;
   public appPages = [
     {title: 'Home', url: '/home', icon: 'home'},
-    {title: 'Contatcts', url: '/contacts', icon: 'contacts'}
+    {title: 'Contatti', url: '/contacts', icon: 'contacts'},
+    {title: 'Persone', url: '/users', icon: 'search'}
   ];
-
   constructor(
       private platform: Platform, private angularFireAuth: AngularFireAuth,
       private router: Router) {
