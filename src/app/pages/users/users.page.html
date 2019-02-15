@@ -17,22 +17,25 @@
   <ion-list>
     <ng-container *ngIf="list as list else loading">
       <ion-item *ngFor="let item of list">
-        <ion-avatar>
+        <ion-avatar item-start>
           <img src="/assets/images/profile/user.svg" *ngIf="!item.photoURL">
           <img [src]="item.photoURL" *ngIf="item.photoURL">
         </ion-avatar>
-        <ion-label padding>{{item.displayName}}</ion-label>
-        <ion-buttons slot="end" color="primary">
-          <ion-button>
-            <ion-icon name="add"></ion-icon>
-            Aggiungi agli amici
-          </ion-button>
-          <ion-button>
-            <ion-icon name="mail"></ion-icon>
-            Invia Messaggio
-          </ion-button>
-        </ion-buttons>
-
+        <ion-label padding>
+          <h2>{{item.displayName}}</h2>
+          <p>
+            <ion-buttons color="primary">
+              <ion-button>
+                <ion-icon name="add"></ion-icon>
+                Aggiungi agli amici
+              </ion-button>
+              <ion-button>
+                <ion-icon name="mail"></ion-icon>
+                Invia Messaggio
+              </ion-button>
+            </ion-buttons>
+          </p>
+        </ion-label>
       </ion-item>
 
     </ng-container>

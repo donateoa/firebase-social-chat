@@ -18,8 +18,11 @@ export class ContatctService implements RestInterface {
   constructor(private angularFireAuth: AngularFireAuth) {}
   lastVisible: IUser;
 
-  getUrl = () => this.angularFireAuth.authState.pipe(
-      map(user => user.uid? `contacts/${user.uid}/list`: null))
+  getUrlContacts = () => this.angularFireAuth.authState.pipe(
+      map(user => user.uid? `contacts/${user.uid}/list`: null));
+
+  getUrlNotification = () => this.angularFireAuth.authState.pipe(
+      map(user => user.uid? `notifications/${user.uid}/contacts-request`: null))
 
   mapToObj(data: any): object {
     const result: User = new User();
@@ -38,7 +41,7 @@ export class ContatctService implements RestInterface {
 
   find(id: string): Observable<User> {
     const db = firebase.firestore();
-    return this.getUrl().pipe(flatMap(
+    return this.getUrlContacts().pipe(flatMap(
         url => url ? from(db.collection(url).doc(id).get().then(
                          t => this.mapToObj(t.data()))) :
                      null));
@@ -48,7 +51,7 @@ export class ContatctService implements RestInterface {
 
   query(next?: boolean, filter?: IFilter): Observable<User[]> {
     const db = firebase.firestore();
-    return this.getUrl().pipe(flatMap(url => {
+    return this.getUrlContacts().pipe(flatMap(url => {
       if (!url) {
         return [];
       } else {

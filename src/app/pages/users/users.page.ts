@@ -63,4 +63,5 @@ export class UsersPage implements OnInit {
       this.loadPage(true);
     }, 500);
   }
+  addToMyContacts(user: string) {}
 }
