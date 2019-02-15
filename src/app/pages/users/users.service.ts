@@ -49,7 +49,11 @@ export class UsersService implements RestInterface {
   query(next?: boolean, filter?: IFilter): Observable<any[]> {
     const firebaseFunction = firebase.functions().httpsCallable('allUsers');
     const that = this;
-    return from(firebaseFunction({}).then(response => {
+    const data = {};
+    if (next && this.lastVisible) {
+      data['nextPageToken'] = this.lastVisible;
+    }
+    return from(firebaseFunction(data).then(response => {
       that.lastVisible = response.data.pageToken;
       return response.data.users;
     }))
