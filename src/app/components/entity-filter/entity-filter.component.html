@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Filtro e Ordinamento</ion-title>
+    <ion-buttons slot="end" color="light">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <form class="form" [formGroup]="validations_form">
+    <ion-list>
+      <ion-list-header>Filtra e Ordina</ion-list-header>
+      <ion-item>
+        <ion-label>Campo</ion-label>
+        <ion-select placeholder="Seleziona uno" formControlName="field">
+          <ion-select-option *ngFor="let key of keys" [value]="key">{{key}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Operatore</ion-label>
+        <ion-select placeholder="Seleziona uno" formControlName="operator">
+          <ion-select-option *ngFor="let operator of operators" [value]="operator.code">{{operator.label}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <div formGroupName="value_matching_field">
+        <ion-item>
+          <ion-label>Valore</ion-label>
+          <ion-input slot="end" placeholder="Valore" clearInput formControlName="value"></ion-input>
+        </ion-item>
+        <ion-list-header>
+          <ion-label>Ordinamento</ion-label>
+        </ion-list-header>
+
+        <ion-item>
+          <ion-radio-group formControlName="sort">
+            <ion-row>
+              <ion-col>
+                <ion-item lines="none">
+                  <ion-label>Crescente</ion-label>
+                  <ion-radio slot="start" value="asc" checked></ion-radio>
+                </ion-item>
+              </ion-col>
+              <ion-col>
+                <ion-item lines="none">
+                  <ion-label>Decrescente</ion-label>
+                  <ion-radio slot="start" value="desc" checked></ion-radio>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-radio-group>
+
+        </ion-item>
+      </div>
+    </ion-list>
+  </form>
+
+</ion-content>
+<ion-footer>
+  <ion-toolbar color="light">
+
+    <ion-button (click)="clear()" fill="clear">Cancella</ion-button>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Annulla</ion-button>
+      <ion-button [disabled]="validations_form.invalid" (click)="apply()" fill="solid" color="primary">Applica
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-footer>

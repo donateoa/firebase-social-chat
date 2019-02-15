@@ -58,7 +58,6 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     FacebookService,
     SplashScreen,
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
-    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     {provide: LocationStrategy, useClass: HashLocationStrategy},
 
   ],

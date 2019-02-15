@@ -1,8 +1,12 @@
 import 'firebase/firestore';
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {IonContent} from '@ionic/angular';
 import * as firebase from 'firebase/app';
-import {PAGE_SIZE} from 'src/app.constants';
+import {IFilter, SortType} from 'src/app/components/entity-filter/entity-filter.model';
+
+import {User} from './user.model';
+import {UsersService} from './users.service';
 
 @Component({
   selector: 'app-users',
@@ -10,38 +14,45 @@ import {PAGE_SIZE} from 'src/app.constants';
   styleUrls: ['./users.page.scss'],
 })
 export class UsersPage implements OnInit {
-  users: any;
-  docRef: any;
-  lastVisible: any;
+  @ViewChild(IonContent) content: IonContent;
+  list: User[];
   disabledInfiniteScroll = true;
-  constructor() {}
+  account: Account;
+  // set default sort
+  defaultfilter: IFilter = {
+    field: 'creationDate',
+    sort: SortType.DESC,
+  };
+  filter: IFilter = this.defaultfilter;
+  filterKeys: string[] = [
+    'id', 'creationDate', 'nominative', 'provider', 'providerName', 'type',
+    'user', 'paymentType', 'srId'
+  ];
+  constructor(private usersService: UsersService) {}
 
-  ngOnInit() { this.docRef = firebase.firestore().collection(`users`); }
-  pageWillEnter() {}
-
-  query(next: boolean) {
-    if (next) {
-      return this.docRef.orderBy('sendDate', 'desc')
-          .startAfter(this.lastVisible)
-          .limit(PAGE_SIZE);
+  ngOnInit() {}
+  changeFilter(criteria) {
+    if (criteria.filter) {
+      this.filter = criteria.filter;
     } else {
-      return this.docRef.orderBy('sendDate', 'desc').limit(PAGE_SIZE);
+      this.filter = this.defaultfilter;
     }
+    this.transition();
   }
-  setLastVisible = (documentSnapshots) => this.lastVisible =
-      documentSnapshots.docs[documentSnapshots.docs.length - 1];
 
-
-  loadPage() {
-    this.query(true).get().then(documentSnapshots => {
-      if (documentSnapshots.docs.length <= 0) {
+  pageWillEnter() { this.transition(); }
+  transition() { this.loadPage(false); }
+  loadPage(append) {
+    this.usersService.query(append, this.filter).subscribe(data => {
+      if (data.length <= 0) {
         // disable infinite-scroll when data are fineshed
         this.disabledInfiniteScroll = true;
       } else {
-        this.users = [
-          ...documentSnapshots.docs.map(t => t.data()).reverse(), ...this.users
-        ];
-        this.setLastVisible(documentSnapshots);
+        if (!append) {
+          this.list = [];
+        }
+        this.list = [...this.list, ...data];
+        this.disabledInfiniteScroll = false;
       }
     });
   }
@@ -49,7 +60,7 @@ export class UsersPage implements OnInit {
     setTimeout(() => {
       console.log('Done');
       event.target.complete();
-      this.loadPage();
+      this.loadPage(true);
     }, 500);
   }
 }

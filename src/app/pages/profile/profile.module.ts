@@ -4,8 +4,8 @@ import {FormsModule} from '@angular/forms';
 import {RouterModule, Routes} from '@angular/router';
 import {IonicModule} from '@ionic/angular';
 
-import {ProfileService} from './ProfileService';
 import {ProfilePage} from './profile.page';
+import {ProfileService} from './profile.service';
 
 const routes: Routes = [{path: '', component: ProfilePage}];
 

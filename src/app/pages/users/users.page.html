@@ -3,20 +3,34 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Users</ion-title>
+    <ion-title>Utenti</ion-title>
+    <ion-buttons slot="end">
+      <ion-button href="/users">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
     </ion-buttons>
 
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-list>
-    <ion-item *ngFor="let user of users">
-      <ion-label>{{user.name}}</ion-label>
-    </ion-item>
-  </ion-list>
+  <ng-container *ngIf="list as list else loading">
+    <ion-list>
+      <ion-item *ngFor="let item of list">
+        <ion-label>{{item}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+  <ng-template #loading>
+    <ion-row>
+      <ion-col text-center>
+        <ion-spinner></ion-spinner>
+      </ion-col>
+    </ion-row>
+  </ng-template>
+  </ion-grid>
 
-  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+  <ion-infinite-scroll [disabled]="disabledInfiniteScroll" (ionInfinite)="loadData($event)" position="bottom">
     <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
