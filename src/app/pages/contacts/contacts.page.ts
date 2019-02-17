@@ -1,17 +1,10 @@
-import 'firebase/auth';
-
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {AngularFireAuth} from '@angular/fire/auth';
-import {IonContent, IonInfiniteScroll} from '@ionic/angular';
-import * as firebase from 'firebase/app';
-import {FacebookService, UIParams, UIResponse} from 'ngx-facebook';
-import {Observable} from 'rxjs';
+import {IonContent} from '@ionic/angular';
 import {IFilter, SortType} from 'src/app/components/entity-filter/entity-filter.model';
-import {environment} from 'src/environments/environment';
+import {RestService} from 'src/app/services/rest.service';
 
-import {User} from '../users/user.model';
+import {IUser, User} from '../users/user.model';
 
-import {ContatctService} from './contact.service';
 
 @Component({
   selector: 'app-contacts',
@@ -25,15 +18,12 @@ export class ContactsPage implements OnInit {
   account: Account;
   // set default sort
   defaultfilter: IFilter = {
-    field: 'creationDate',
-    sort: SortType.DESC,
+    field: 'displayName',
+    sort: SortType.ASC,
   };
   filter: IFilter = this.defaultfilter;
-  filterKeys: string[] = [
-    'id', 'creationDate', 'nominative', 'provider', 'providerName', 'type',
-    'user', 'paymentType', 'srId'
-  ];
-  constructor(private contactService: ContatctService) {}
+  filterKeys: string[] = ['uid', 'displayName', 'email'];
+  constructor(private restService: RestService<IUser>) {}
 
   ngOnInit() {}
   changeFilter(criteria) {
@@ -48,10 +38,15 @@ export class ContactsPage implements OnInit {
   pageWillEnter() { this.transition(); }
   transition() { this.loadPage(false); }
   loadPage(append) {
-    this.contactService.query(append, this.filter).subscribe(data => {
+    this.restService.query(append, this.filter).subscribe(data => {
+      console.log(data);
       if (data.length <= 0) {
         // disable infinite-scroll when data are fineshed
         this.disabledInfiniteScroll = true;
+        // disable loading if present
+        if (!this.list) {
+          this.list = [];
+        }
       } else {
         if (!append) {
           this.list = [];

@@ -14,7 +14,8 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   { path: 'users', loadChildren: './pages/users/users.module#UsersPageModule' },
-  { path: 'profile', loadChildren: './pages/profile/profile.module#ProfilePageModule' }
+  { path: 'profile', loadChildren: './pages/profile/profile.module#ProfilePageModule' },
+  { path: 'notifications', loadChildren: './pages/notifications/notifications.module#NotificationsPageModule' }
 ];
 
 @NgModule({imports: [RouterModule.forRoot(routes)], exports: [RouterModule]})

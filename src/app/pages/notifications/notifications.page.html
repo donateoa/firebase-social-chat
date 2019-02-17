@@ -3,25 +3,37 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Contacts</ion-title>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/users">
-        <ion-icon name="add"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-
+    <ion-title>Notifiche</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-list>
+  <ion-list lines="none">
+    <ion-list-header>
+      Richieste di contatto
+    </ion-list-header>
     <ng-container *ngIf="list as list else loading">
       <ion-item *ngFor="let item of list">
         <ion-avatar>
           <img src="/assets/images/profile/user.svg" *ngIf="!item.photoURL">
           <img [src]="item.photoURL" *ngIf="item.photoURL">
         </ion-avatar>
-        <ion-label padding>{{item.displayName}}</ion-label>
+        <ion-label padding>
+          <h3>{{item.displayName}}</h3>
+          <p>Ti ha inviato una richiesta di contatto</p>
+          <p>
+            <ion-buttons color="primary">
+              <ion-button (click)="addToContact(item.email)" color="primary">
+                <ion-icon name="add"></ion-icon>
+                Aggiungi agli amici
+              </ion-button>
+              <ion-button>
+                <ion-icon name="close"></ion-icon>
+                Rifiuta
+              </ion-button>
+            </ion-buttons>
+          </p>
+        </ion-label>
       </ion-item>
 
     </ng-container>

@@ -1,52 +1,50 @@
 import {Injectable} from '@angular/core';
-import {AngularFireAuth} from '@angular/fire/auth';
 import {Observable, from, of } from 'rxjs';
 import {RestInterface} from 'src/app/services/rest.interface';
 
 import {IUser, User} from '../users/user.model';
 
-import {map, flatMap,} from 'rxjs/operators';
+import {flatMap,} from 'rxjs/operators';
 import 'firebase/firestore';
 
-import {Query} from '@angular/fire/firestore';
 import * as firebase from 'firebase/app';
 import {IFilter} from 'src/app/components/entity-filter/entity-filter.model';
-import {PAGE_SIZE} from 'src/app.constants';
 import 'firebase/functions';
+
+export function mapToUser(data: any): IUser {
+  const result: IUser = new User();
+  if (!data) {
+    return null;
+  }
+  result.uid = data.uid;
+  result.displayName = data.displayName;
+  result.email = data.email;
+  result.photoURL = data.photoURL;
+  return result;
+}
 
 @Injectable({providedIn: 'root'})
 export class UsersService implements RestInterface {
-  constructor(private angularFireAuth: AngularFireAuth) {}
+  constructor() {}
   lastVisible: string;
 
   getUrl = () => of ('users');
-
-  mapToObj(data: any): object {
-    const result: User = new User();
-    if (!data) {
-      return null;
-    }
-    Object.keys(data)
-        .filter(key => data[key] !== undefined)  // remove null or undefined
-        .map(key => result[key] = data[key]);
-    return result;
-  }
 
   create(data: any): Observable<any> { return null; }
 
   update(data: any): Observable<any> { return null; }
 
-  find(id: string): Observable<User> {
+  find(id: string): Observable<IUser> {
     const db = firebase.firestore();
     return this.getUrl().pipe(flatMap(
         url => url ? from(db.collection(url).doc(id).get().then(
-                         t => this.mapToObj(t.data()))) :
+                         t => mapToUser(t.data()))) :
                      null));
   }
 
   delete (id: number|string): Observable<any> { return null; }
 
-  query(next?: boolean, filter?: IFilter): Observable<any[]> {
+  query(next?: boolean, filter?: IFilter): Observable<IUser[]> {
     const firebaseFunction = firebase.functions().httpsCallable('allUsers');
     const that = this;
     const data = {};
@@ -55,33 +53,8 @@ export class UsersService implements RestInterface {
     }
     return from(firebaseFunction(data).then(response => {
       that.lastVisible = response.data.pageToken;
-      return response.data.users;
+      return response.data.users.map(user => mapToUser(user));
     }))
-
-    // const db = firebase.firestore();
-    // return this.getUrl().pipe(flatMap(url => {
-    //   if (!url) {
-    //     return [];
-    //   } else {
-    //     let listRef: Query = db.collection(url);
-    //     if (filter) {
-    //       if (filter.value) {
-    //         listRef =
-    //             listRef.where(filter.field, filter.operator, filter.value);
-    //       }
-    //       if (filter.sort) {
-    //         listRef = listRef.orderBy(filter.field, filter.sort);
-    //       }
-    //     }
-    //     if (next) {
-    //       listRef = listRef.startAfter(this.lastVisible)
-    //     }
-    //     return listRef.limit(PAGE_SIZE)
-    //         .get()
-    //         .then((t) => this.setLastVisible(t))
-    //         .then(d => d.docs.map(t => this.mapToObj(t.data())));
-    //   }
-    // }));
   }
   setLastVisible(documentSnapshots) {
     this.lastVisible =

@@ -1,5 +1,12 @@
-export interface IUser { id?: string; }
+export interface IUser {
+  uid?: string;
+  displayName?: string;
+  email?: string;
+  photoURL?: string;
+}
 
 export class User implements IUser {
-  constructor(public id?: string) {}
+  constructor(
+      public uid?: string, displayName?: string, email?: string,
+      photoURL?: string) {}
 }

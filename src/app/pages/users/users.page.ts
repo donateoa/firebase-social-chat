@@ -3,10 +3,14 @@ import 'firebase/firestore';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {IonContent} from '@ionic/angular';
 import * as firebase from 'firebase/app';
+import {map} from 'rxjs/operators';
 import {IFilter, SortType} from 'src/app/components/entity-filter/entity-filter.model';
+import {Principal} from 'src/app/services/Principal';
 
-import {User} from './user.model';
-import {UsersService} from './users.service';
+import {INotification} from '../notifications/notifications.model';
+
+import {IUser, User} from './user.model';
+import {UsersService, mapToUser} from './users.service';
 
 @Component({
   selector: 'app-users',
@@ -28,7 +32,8 @@ export class UsersPage implements OnInit {
     'id', 'creationDate', 'nominative', 'provider', 'providerName', 'type',
     'user', 'paymentType', 'srId'
   ];
-  constructor(private usersService: UsersService) {}
+  constructor(
+      private usersService: UsersService, private principal: Principal) {}
 
   ngOnInit() {}
   changeFilter(criteria) {
@@ -47,6 +52,10 @@ export class UsersPage implements OnInit {
       if (data.length <= 0) {
         // disable infinite-scroll when data are fineshed
         this.disabledInfiniteScroll = true;
+        // disable loading if present
+        if (!this.list) {
+          this.list = [];
+        }
       } else {
         if (!append) {
           this.list = [];
@@ -63,5 +72,14 @@ export class UsersPage implements OnInit {
       this.loadPage(true);
     }, 500);
   }
-  addToMyContacts(user: string) {}
+  addToContact(user: IUser) {
+    const url = `notifications/${user.email}/contacts-request/`;
+    const db = firebase.firestore();
+    const me: IUser = this.principal.identity();
+    if (me) {
+      db.collection(url).doc(me.email).set(Object.assign({}, me));
+    } else {
+      console.log('error me is null', me);
+    }
+  }
 }

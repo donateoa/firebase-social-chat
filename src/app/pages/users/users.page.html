@@ -25,7 +25,7 @@
           <h2>{{item.displayName}}</h2>
           <p>
             <ion-buttons color="primary">
-              <ion-button>
+              <ion-button (click)="addToContact(item)">
                 <ion-icon name="add"></ion-icon>
                 Aggiungi agli amici
               </ion-button>
@@ -40,7 +40,7 @@
 
     </ng-container>
     <ng-template #loading>
-      <ion-item text-center>
+      <ion-item text-center lines="none">
         <ion-spinner></ion-spinner>
       </ion-item>
     </ng-template>

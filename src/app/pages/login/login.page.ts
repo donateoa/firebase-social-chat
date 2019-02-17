@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AngularFireAuth} from '@angular/fire/auth';
 import {Router} from '@angular/router';
 import {FirebaseUISignInFailure, FirebaseUISignInSuccessWithAuthResult} from 'firebaseui-angular';
 import {Subscription} from 'rxjs';
+import {Principal} from 'src/app/services/Principal';
 
 @Component({
   selector: 'app-login',
@@ -12,15 +12,14 @@ import {Subscription} from 'rxjs';
 export class LoginPage implements OnDestroy,
     OnInit {
   subscription: Subscription;
-  constructor(
-      private angularFireAuth: AngularFireAuth, private router: Router) {}
+  constructor(private principal: Principal, private router: Router) {}
 
   ngOnInit(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
 
-    this.subscription = this.angularFireAuth.authState.subscribe(
+    this.subscription = this.principal.getAuthenticationState().subscribe(
         (response) => this.firebaseAuthChangeListener(response));
   }
 

@@ -4,19 +4,20 @@ import {FormsModule} from '@angular/forms';
 import {RouterModule, Routes} from '@angular/router';
 import {IonicModule} from '@ionic/angular';
 import {RestService} from 'src/app/services/rest.service';
-import {ContactsPage} from './contacts.page';
 
-const routes: Routes = [{path: '', component: ContactsPage}];
+import {NotificationsPage} from './notifications.page';
+
+const routes: Routes = [{path: '', component: NotificationsPage}];
 
 @NgModule({
   imports:
       [CommonModule, FormsModule, IonicModule, RouterModule.forChild(routes)],
-  declarations: [ContactsPage],
+  declarations: [NotificationsPage],
   providers: [
     RestService,
-    {provide: 'collectionKeyBeforeLogin', useValue: 'contacts'},
-    {provide: 'collectionKeyAfterLogin', useValue: 'list'},
+    {provide: 'collectionKeyBeforeLogin', useValue: 'notifications'},
+    {provide: 'collectionKeyAfterLogin', useValue: 'contacts-request'},
   ]
 })
-export class ContactsPageModule {
+export class NotificationsPageModule {
 }
