@@ -19,12 +19,14 @@ export class UserResolve implements Resolve<IUser> {
   }
 }
 const routes: Routes = [
-  {path: '', redirectTo: 'home', pathMatch: 'full'}, {
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {
     path: 'home',
     loadChildren: './pages/home/home.module#HomePageModule',
     canActivate: [AuthGuardService]
   },
-  {path: 'login', loadChildren: './pages/login/login.module#LoginPageModule'}, {
+  {path: 'login', loadChildren: './pages/login/login.module#LoginPageModule'},
+  {
     path: 'contacts',
     loadChildren: './pages/contacts/contacts.module#ContactsPageModule',
     canActivate: [AuthGuardService]
@@ -55,7 +57,13 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
     loadChildren: './pages/chat/chat.module#ChatPageModule',
     resolve: {user: UserResolve},
-  }
+  },
+  {
+    path: 'upload/:uid',
+    canActivate: [AuthGuardService],
+    loadChildren: './pages/upload/upload.module#UploadPageModule',
+    resolve: {user: UserResolve},
+  },
 ];
 
 @NgModule({imports: [RouterModule.forRoot(routes)], exports: [RouterModule]})

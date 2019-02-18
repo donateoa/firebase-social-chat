@@ -2,6 +2,7 @@ import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFireAuthModule} from '@angular/fire/auth';
+import {AngularFireStorage} from '@angular/fire/storage';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouteReuseStrategy} from '@angular/router';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
@@ -54,6 +55,7 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     AngularFireAuthModule, FirebaseUIModule.forRoot(firebaseUiAuthConfig)
   ],
   providers: [
+    AngularFireStorage,
     StatusBar,
     FacebookService,
     SplashScreen,

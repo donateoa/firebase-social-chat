@@ -1,4 +1,5 @@
 import 'firebase/firestore';
+import 'firebase/functions';
 
 import {Component, OnDestroy, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
