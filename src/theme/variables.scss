@@ -80,4 +80,11 @@
   --ion-text-color: #454545;
   --ion-toolbar-background:var(--ion-color-primary);
   --ion-toolbar-color:var(--ion-color-primary-contrast);
+
+  .active-link{
+    color:var(--ion-color-tertiary);
+  }
+  .active-link ion-icon{
+    color:var(--ion-color-tertiary);
+  }
 }
