@@ -1,8 +1,10 @@
 import 'firebase/functions';
+import 'firebase/firestore';
 
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {IonContent, LoadingController} from '@ionic/angular';
 import * as firebase from 'firebase/app';
+import {Principal} from 'src/app/services/Principal';
 import {RestService} from 'src/app/services/rest.service';
 import {ToastService} from 'src/app/services/toast.service';
 
@@ -20,6 +22,7 @@ export class NotificationsPage implements OnInit {
   account: Account;
   loading: any;
   constructor(
+      private principal: Principal,
       private loadingController: LoadingController,
       private toastService: ToastService,
       private restService: RestService<INotification>) {}
@@ -27,7 +30,15 @@ export class NotificationsPage implements OnInit {
   ngOnInit() {}
 
 
-  pageWillEnter() { this.transition(); }
+  pageWillEnter() {
+    this.transition();
+    // reset num of notification must be read
+    const user = this.principal.identity();
+    const docRef = firebase.firestore().doc(`notification/${user.email}`);
+    docRef.set({'contact-notifications': 0}, {merge: true})
+        .then(() => console.log('reset num of message must be read'))
+        .catch((e) => console.log('error during reset message', e));
+  }
   transition() { this.loadPage(false); }
   loadPage(append) {
     this.restService.query(append, null).subscribe(data => {

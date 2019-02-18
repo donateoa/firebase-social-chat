@@ -1,8 +1,14 @@
+import 'firebase/functions';
+import 'firebase/firestore';
+
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {IonContent} from '@ionic/angular';
 import {User} from 'firebase';
+import * as firebase from 'firebase/app';
 import {IFilter, SortType} from 'src/app/components/entity-filter/entity-filter.model';
+import {Principal} from 'src/app/services/Principal';
 import {RestService} from 'src/app/services/rest.service';
+
 import {IUser} from '../users/user.model';
 
 @Component({
@@ -22,7 +28,8 @@ export class ChatsPage implements OnInit {
   };
   filter: IFilter = this.defaultfilter;
   filterKeys: string[] = ['uid', 'displayName', 'email'];
-  constructor(private restService: RestService<IUser>) {}
+  constructor(
+      private principal: Principal, private restService: RestService<IUser>) {}
 
   ngOnInit() {}
   changeFilter(criteria) {
@@ -34,7 +41,15 @@ export class ChatsPage implements OnInit {
     this.transition();
   }
 
-  pageWillEnter() { this.transition(); }
+  pageWillEnter() {
+    this.transition();
+    // reset num of notification must be read
+    const user = this.principal.identity();
+    const docRef = firebase.firestore().doc(`notification/${user.email}`);
+    docRef.set({'messages': 0}, {merge: true})
+        .then(() => console.log('reset num of message must be read'))
+        .catch((e) => console.log('error during reset message', e));
+  }
   transition() { this.loadPage(false); }
   loadPage(append) {
     this.restService.query(append, this.filter).subscribe(data => {

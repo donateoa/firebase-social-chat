@@ -73,11 +73,18 @@ export class UsersPage implements OnInit {
     }, 500);
   }
   addToContact(user: IUser) {
-    const url = `notifications/${user.email}/contacts-request/`;
-    const db = firebase.firestore();
     const me: IUser = this.principal.identity();
     if (me) {
-      db.collection(url).doc(me.email).set(Object.assign({}, me));
+      const docRef = firebase.firestore().doc(`notification/${user.email}`);
+
+      docRef.get()
+          .then((doc) => doc.exists ? doc.data().contactNotifications + 1 : 1)
+          .then(num => docRef.set({'contactNotifications': num}, {merge: true}))
+          .then(
+              () => docRef.collection('contacts-request')
+                        .doc(me.email)
+                        .set(Object.assign({}, me)))
+          .then(() => console.log('Request sent'));
     } else {
       console.log('error me is null', me);
     }
