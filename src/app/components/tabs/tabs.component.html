@@ -7,12 +7,12 @@
 
     <ion-tab-button color="secondary" routerLink="/contacts" routerLinkActive="active-link">
       <ion-icon name="contacts"></ion-icon>
-      <ion-badge color="danger" *ngIf="requests$ | async as num" item-end>{{num }}</ion-badge>
+      <ion-badge color="danger" *ngIf="notifications$ | async as n" item-end>{{n.contactNotifications }}</ion-badge>
     </ion-tab-button>
 
     <ion-tab-button routerLink="/chats" routerLinkActive="active-link">
       <ion-icon name="chatboxes"></ion-icon>
-      <ion-badge color="danger" *ngIf="messages$ | async as num" item-end>{{num }}</ion-badge>
+      <ion-badge color="danger" *ngIf="notifications$ | async as n" item-end>{{n.messages }}</ion-badge>
     </ion-tab-button>
 
     <ion-tab-button routerLink="/profile" routerLinkActive="active-link">
