@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <app-search></app-search>
+  </ion-toolbar>
+  <ion-toolbar>
+    <app-tabs></app-tabs>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ng-container *ngIf="list as list else loading">
+    <ion-card *ngFor="let item of list">
+      <img [src]="item.media" *ngIf="item.media" />
+      <ion-card-content>
+        <ion-card-title>
+          {{item.title}}
+        </ion-card-title>
+        <p>
+          {{item.text}}
+        </p>
+      </ion-card-content>
+    </ion-card>
+
+  </ng-container>
+  <ng-template #loading>
+    <ion-item text-center lines="none">
+      <ion-spinner></ion-spinner>
+    </ion-item>
+  </ng-template>
+
+  <ion-infinite-scroll [disabled]="disabledInfiniteScroll" (ionInfinite)="loadData($event)" position="bottom">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button routerLink="/posts/new">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

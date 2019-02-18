@@ -70,6 +70,11 @@ const routes: Routes = [
     loadChildren:
         './pages/media-detail/media-detail.module#MediaDetailPageModule'
   },
+  {
+    path: 'posts',
+    loadChildren: './posts/posts.module#PostsPageModule',
+    canActivate: [AuthGuardService],
+  },
 ];
 
 @NgModule({imports: [RouterModule.forRoot(routes)], exports: [RouterModule]})
