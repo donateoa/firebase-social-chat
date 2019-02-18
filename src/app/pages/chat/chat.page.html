@@ -3,12 +3,12 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="home"></ion-back-button>
     </ion-buttons>
-    <ion-item *ngIf="destinatario$ | async as user" color="primary">
+    <ion-item *ngIf="destinatario$ | async as user" color="primary" lines="none">
       <ion-avatar>
         <img src="/assets/images/profile/user.svg" *ngIf="!user.photoURL">
         <img [src]="user.photoURL" *ngIf="user.photoURL">
       </ion-avatar>
-      <ion-label padding>{{destinatario.displayName}}</ion-label>
+      <ion-label>{{destinatario.displayName}}</ion-label>
     </ion-item>
     <!-- <ion-buttons slot="end">
       <ion-button [routerLink]="['/media', login]" shape="round" fill="clear">

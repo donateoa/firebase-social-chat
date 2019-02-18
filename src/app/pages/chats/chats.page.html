@@ -18,7 +18,10 @@
           <img src="/assets/images/profile/user.svg" *ngIf="!item.photoURL">
           <img [src]="item.photoURL" *ngIf="item.photoURL">
         </ion-avatar>
-        <ion-label padding>{{item.displayName}}</ion-label>
+        <ion-label padding>
+          <h3>{{item.displayName}}</h3>
+          <p>{{item.text}}</p>
+        </ion-label>
         <ion-badge *ngIf="item.read" item-end>{{item.read }}</ion-badge>
       </ion-item>
 
