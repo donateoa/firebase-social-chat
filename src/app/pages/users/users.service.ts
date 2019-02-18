@@ -28,18 +28,21 @@ export class UsersService implements RestInterface {
   constructor() {}
   lastVisible: string;
 
-  getUrl = () => of ('users');
-
   create(data: any): Observable<any> { return null; }
 
   update(data: any): Observable<any> { return null; }
 
+  findByEmail(email: string): Observable<IUser> {
+    const firebaseFunction = firebase.functions().httpsCallable('getUser');
+    const data = {email: email};
+    return from(
+        firebaseFunction(data).then(response => mapToUser(response.data)));
+  }
   find(id: string): Observable<IUser> {
-    const db = firebase.firestore();
-    return this.getUrl().pipe(flatMap(
-        url => url ? from(db.collection(url).doc(id).get().then(
-                         t => mapToUser(t.data()))) :
-                     null));
+    const firebaseFunction = firebase.functions().httpsCallable('getUser');
+    const data = {uid: id};
+    return from(
+        firebaseFunction(data).then(response => mapToUser(response.data)));
   }
 
   delete (id: number|string): Observable<any> { return null; }

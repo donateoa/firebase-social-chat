@@ -1,0 +1,74 @@
+
+  .messages {
+    margin-bottom: 20px !important;
+  }
+  .messages .message {
+    padding: 0 10px 0 5px !important;
+    text-align: right !important;
+  }
+  .messages.other .message {
+    text-align: left !important;
+  }
+ 
+  .time {
+    padding: 4px !important;
+    font-size: 0.7em;
+    text-align: right !important;
+  }
+  .messages.other .time {
+    text-align: left !important;
+  }
+ 
+  .messages.other.slide-right .message{
+    -webkit-transform: translate3d(120px, 0, 0) !important;
+    -moz-transform: translate3d(120px, 0, 0) !important;
+    transform: translate3d(120px, 0, 0) !important;
+  }
+  
+  span {
+    background-color: var(--ion-color-secondary);
+    display: inline-block !important;
+    color: var(--ion-color-secondary-contrast);
+    padding: 10px !important;
+    border-radius: 10px !important;
+    text-align: left !important;
+    max-width: 240px !important;
+  }
+  .speech-bubble {
+    position: relative;
+    border-radius: .4em;
+  }
+  
+  .speech-bubble:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 7px solid transparent;
+  }
+  .messages.mine .message span.speech-bubble:after {
+    right: 0;
+    border-left-color: var(--ion-color-secondary);
+    color: var(--ion-color-secondary-contrast) !important;
+    border-right: 0;
+    border-bottom: 0;
+    margin-top: -3.5px;
+    margin-right: -7px;
+  }
+  .messages.other .message span {
+    background: var(--ion-color-success) !important;
+    color: var(--ion-color-success-contrast) !important;
+  }
+  .messages.other .message span.speech-bubble:after {
+    left: 0;
+    border-right-color: var(--ion-color-success);
+    border-left: 0;
+    border-bottom: 0;
+    margin-top: -3.5px;
+    margin-left: -7px;
+  }
+  .message .media { 
+    clear: both;
+    display: block;  
+  }

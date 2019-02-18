@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Conversazioni</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/users">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ng-container *ngIf="list as list else loading">
+      <ion-item *ngFor="let item of list" [routerLink]="['/chats',item.uid]">
+        <ion-avatar>
+          <img src="/assets/images/profile/user.svg" *ngIf="!item.photoURL">
+          <img [src]="item.photoURL" *ngIf="item.photoURL">
+        </ion-avatar>
+        <ion-label padding>{{item.displayName}}</ion-label>
+        <ion-badge *ngIf="item.read" item-end>{{item.read }}</ion-badge>
+      </ion-item>
+
+    </ng-container>
+    <ng-template #loading>
+      <ion-item text-center lines="none">
+        <ion-spinner></ion-spinner>
+      </ion-item>
+    </ng-template>
+  </ion-list>
+
+  <ion-infinite-scroll [disabled]="disabledInfiniteScroll" (ionInfinite)="loadData($event)" position="bottom">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

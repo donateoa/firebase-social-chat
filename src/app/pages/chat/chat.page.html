@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-item *ngIf="destinatario$ | async as user" color="primary">
+      <ion-avatar>
+        <img src="/assets/images/profile/user.svg" *ngIf="!user.photoURL">
+        <img [src]="user.photoURL" *ngIf="user.photoURL">
+      </ion-avatar>
+      <ion-label padding>{{destinatario.displayName}}</ion-label>
+    </ion-item>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/media', login]" shape="round" fill="clear">
+        <ion-icon name="md-images"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-infinite-scroll [disabled]="disabledInfiniteScroll" (ionInfinite)="loadData($event)" position="top">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <div #scrollme class="scrollme messagges-wrapper" *ngIf="destinatario$ | async as user">
+    <div *ngFor="let message of messages" class="messages" [class.other]="message.uid !== user.uid"
+      [class.mine]="message.uid === user.uid">
+      <div class="message">
+        <a (click)="navigateToDetail(message.media)" class="media" *ngIf="message.media && !(message.$media | async)">
+          <ion-icon name="attach"></ion-icon>
+          Scarica allegato
+        </a>
+        <span class="speech-bubble" *ngIf="message.text">
+          {{ message.text }}</span>
+      </div>
+      <div class="time">
+        {{message.creationDate.seconds * 1000 | date:'d MMM, h:mm a'  }}
+      </div>
+    </div>
+  </div>
+</ion-content>
+<ion-footer *ngIf="destinatario$ | async as user">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-input (keyup)="onKey($event)" type="text" placeholder="Scrivi un messaggio" [(ngModel)]="message"
+          name="message" #textbox></ion-input>
+      </ion-col>
+      <ion-col size="auto">
+        <ion-buttons>
+          <ion-button [routerLink]="['/upload', user.email]" shape="round" fill="clear">
+            <ion-icon name="attach"></ion-icon>
+          </ion-button>
+          <ion-button (click)="sendMessage()" shape="round" color="secondary" fill="clear">
+            <ion-icon name="md-send"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>
