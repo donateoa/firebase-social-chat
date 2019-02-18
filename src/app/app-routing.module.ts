@@ -64,6 +64,12 @@ const routes: Routes = [
     loadChildren: './pages/upload/upload.module#UploadPageModule',
     resolve: {user: UserResolve},
   },
+  {
+    path: 'media-detail',
+    canActivate: [AuthGuardService],
+    loadChildren:
+        './pages/media-detail/media-detail.module#MediaDetailPageModule'
+  },
 ];
 
 @NgModule({imports: [RouterModule.forRoot(routes)], exports: [RouterModule]})

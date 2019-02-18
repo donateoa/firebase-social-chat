@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Media</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="downloadFile()">
+        <ion-icon name="md-download"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ng-container *ngIf="(url | async)">
+    <ion-img [src]="(url | async)" *ngIf=" contentType==='image/jpg' || contentType==='image/png' || contentType==='image/jpeg'"></ion-img>
+    <img src="/assets/images/pdf-icon.png" height="40px" *ngIf=" contentType==='application/pdf'">
+  </ng-container>
+</ion-content>

@@ -94,8 +94,7 @@ export class ChatPage implements OnDestroy {
     });
   }
   navigateToDetail(media: string) {
-    const p = media.split('/');
-    this.router.navigate(['media-detail', ...p])
+    this.router.navigate(['media-detail'], {queryParams: {'media': media}})
   }
 
   ngOnDestroy() { this.unsubscribe(); }
