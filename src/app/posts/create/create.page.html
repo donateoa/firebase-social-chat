@@ -16,7 +16,7 @@
     </div>
 
     <h5>Seleziona un file per l'upload: (.png, .jpg, .pdf)</h5>
-    <input type="file" (change)="handleInputChange($event)" accept=".png,.jpg,.pdf" />
+    <input type="file" (change)="handleInputChange($event)" formControlName="file" accept=".png,.jpg" />
     <br>
     <ion-item lines="none">
       <ion-label position="floating">Titolo</ion-label>

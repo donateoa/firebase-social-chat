@@ -50,12 +50,16 @@ export class CreatePage implements OnInit {
         {
           text: [''],
           title: [''],
+          file: [''],
         },
         {validator: atLeastOne(Validators.required)});
   }
   getDownloadURL(fileName) {
-    let ref = this.afStorage.ref(fileName);
-    ref.getDownloadURL().toPromise();
+    const p = new Promise<string>((resolve, reject) => {
+      let ref = this.afStorage.ref(fileName);
+      ref.getDownloadURL().subscribe(t => resolve(t), e => reject(e));
+    });
+    return p;
   }
 
   uploadIfFile(): Promise<string> {
