@@ -26,7 +26,7 @@ export class User implements IUser {
     return m;
   }
   getContactNotificationsList() {
-    const m = `notifications/${this.email}/contacts-request`;
+    const m = `${this.getNotificationsDocument()}/contacts-request`;
     console.log(m);
     return m;
   }
