@@ -56,6 +56,7 @@ export class AddPostComponent implements OnInit {
           }
           this.apiService.addPost(post).then(() => {
             that.dismissLoading();
+            this.validations_form.reset();
             that.output.emit(true);
           })
         })
@@ -85,5 +86,11 @@ export class AddPostComponent implements OnInit {
   _handleReaderLoaded(e) {
     let reader = e.target;
     this.fileAsDataURL = reader.result
+  }
+  onKey(event: any) {
+    if (event.which === 13) {
+      this.sendPost();
+    }
+    event.preventDefault();
   }
 }

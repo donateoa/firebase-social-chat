@@ -11,7 +11,7 @@ import {PostService} from 'src/app/posts/post.service';
 export class PostComponent implements OnInit {
   @Input('postId') _postId: string;
   post$: Observable<Post>;
-
+  comment: string;
   @Input()
   set postId(postId: any) {
     this._postId = postId;
@@ -21,4 +21,14 @@ export class PostComponent implements OnInit {
 
   constructor(private postService: PostService) {}
   ngOnInit(): void {}
+  addComment() {
+    console.log(this.comment);
+    this.comment = '';
+  }
+  onKey(event: any) {
+    if (event.which === 13) {
+      this.addComment();
+    }
+    event.preventDefault();
+  }
 }
