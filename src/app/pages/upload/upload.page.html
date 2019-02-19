@@ -8,42 +8,27 @@
 </ion-header>
 
 <ion-content padding>
-  <div *ngIf="fileAsDataURL">
-    <ion-thumbnail>
-      <img [src]="fileAsDataURL"
-        *ngIf=" contentType==='image/jpg' || contentType==='image/png' || contentType==='image/jpeg'" />
-      <img src="/assets/images/pdf-icon.png" height="40px" *ngIf=" contentType==='application/pdf'">
-    </ion-thumbnail>
-
-  </div>
-
-  <h5 class="card-title">Seleziona un file per l'upload: (.png, .jpg, .pdf)</h5>
-  <input type="file" (change)="handleInputChange($event)" accept=".png,.jpg,.pdf" />
-  <br>
-  <ion-grid>
-    <ion-row align-items-center>
-      <ion-col>
-        <ion-item>
-          <ion-label position="floating">Aggiungi commento</ion-label>
-          <ion-input (keyup)="onKey($event)" type="text" [(ngModel)]="message" name="message" #textbox></ion-input>
-        </ion-item>
-      </ion-col>
-      <ion-col size="auto">
-        <ion-button (click)="sendAttachment()" shape="round" color="secondary" fill="clear">
+  <form [formGroup]="validations_form">
+    <div *ngIf="fileAsDataURL">
+      <ion-thumbnail>
+        <img [src]="fileAsDataURL"
+          *ngIf=" contentType==='image/jpg' || contentType==='image/png' || contentType==='image/jpeg'" />
+        <img src="/assets/images/pdf-icon.png" height="40px" *ngIf=" contentType==='application/pdf'">
+      </ion-thumbnail>
+    </div>
+    <ion-item>
+      <ion-label position="floating">Aggiungi un commento</ion-label>
+      <ion-input type="textarea" formControlName="text"></ion-input>
+      <ion-buttons slot="end">
+        <ion-button (click)="sendAttachment()" (keyup)="onKey($event)" [disabled]="validations_form.invalid">
           <ion-icon name="md-send"></ion-icon>
         </ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+        <div class="fileUpload">
+          <ion-icon name="attach" color="primary"></ion-icon>
+          <input class="upload" type="file" type="file" (change)="handleInputChange($event)" formControlName="file"
+            accept=".png,.jpg,.pdf" />
+        </div>
+      </ion-buttons>
+    </ion-item>
 
-  <p>{{(uploadProgress | async)}}</p>
-  <div *ngIf="uploadState | async; let state">
-    <ion-button color="secondary" (click)="task.pause()" [disabled]="state === 'paused'">Pausa</ion-button>
-    <ion-button color="secondary" (click)="task.cancel()" [disabled]="!(state === 'paused' || state === 'running')">
-      Annulla</ion-button>
-    <ion-button (click)="task.resume()" [disabled]="state === 'running'" color="secondary">Riprendi</ion-button>
-  </div>
-</ion-content>
-<ion-footer>
-
-</ion-footer>
+  </form>

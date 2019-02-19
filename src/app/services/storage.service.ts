@@ -24,12 +24,12 @@ export class StorageService {
     return p;
   }
 
-  uploadIfFile(f: any): Promise<string> {
+  uploadIfFile(f: any, folder: string): Promise<string> {
     const p = new Promise<string>((resolve, reject) => {
       if (f) {
         const id = Math.random().toString(36).substring(2);
         const mittente = this.principal.identity();
-        const filePath = mittente.email + '/posts/' + id;
+        const filePath = mittente.email + '/' + folder + '/' + id;
         const ref = this.afStorage.ref(filePath);
         const task = ref.put(f);
         this.uploadState = task.snapshotChanges().pipe(map(s => s.state));

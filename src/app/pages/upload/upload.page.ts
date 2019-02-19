@@ -2,13 +2,13 @@ import 'firebase/functions';
 
 import {Location} from '@angular/common';
 import {Component} from '@angular/core';
-import {AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask} from '@angular/fire/storage';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {LoadingController} from '@ionic/angular';
-import * as firebase from 'firebase/app';
-import {Observable, of } from 'rxjs';
-import {map} from 'rxjs/operators';
+import {atLeastOne} from 'src/app/components/add-post/add-post.component';
 import {Principal} from 'src/app/services/Principal';
+import {ApiService} from 'src/app/services/api.service';
+import {StorageService} from 'src/app/services/storage.service';
 import {ToastService} from 'src/app/services/toast.service';
 
 import {IMessage} from '../chat/message.model';
@@ -19,26 +19,57 @@ import {IUser, User} from '../users/user.model';
   templateUrl: './upload.page.html',
   styleUrls: ['./upload.page.scss'],
 })
+
 export class UploadPage {
-  ref: AngularFireStorageReference;
-  task: AngularFireUploadTask;
-  uploadProgress: Observable<number>;
-  uploadState: Observable<string>;
   file;
   fileAsDataURL;
   contentType: string;
   uploading = false;
-  downloadURL;
-  message: string;
+  loading: any;
+  validations_form: FormGroup;
   mittente: User;
   destinatario: IUser;
-  loading: any;
   constructor(
+      private principal: Principal, private activatedRoute: ActivatedRoute,
+      public formBuilder: FormBuilder,
       private loadingController: LoadingController,
-      private activatedRoute: ActivatedRoute, private location: Location,
-      private toastService: ToastService, private principal: Principal,
-      private afStorage: AngularFireStorage) {}
+      private toastService: ToastService, private location: Location,
+      private storageService: StorageService, private apiService: ApiService) {}
 
+  ngOnInit() {
+    this.validations_form = this.formBuilder.group(
+        {
+          text: [''],
+          file: [''],
+        },
+        {validator: atLeastOne(Validators.required)});
+  }
+
+  sendAttachment() {
+    this.presentLoading();
+    const message: IMessage = {
+      'uid': this.destinatario.uid,
+      'text': this.validations_form.get('text').value
+    };
+    const that = this;
+    const folder = 'chats/' + this.destinatario.email;
+    this.storageService.uploadIfFile(this.file, folder)
+        .then((downloadURL) => {
+          if (downloadURL) {
+            message.media = downloadURL;
+          }
+
+          this.apiService.sendMessage(message).then(() => {
+            that.dismissLoading();
+            that.location.back();
+          })
+        })
+        .catch(e => {
+          this.toastService.makeToast(e.message);
+          that.dismissLoading();
+          console.log(e);
+        })
+  }
   pageWillEnter() {
     this.activatedRoute.data.subscribe(({user}) => {
       console.log('detect destinario ', user);
@@ -56,34 +87,7 @@ export class UploadPage {
     }
     event.preventDefault();
   }
-  sendAttachment() {
-    if (!this.file) {
-      return false;
-    }
-    this.presentLoading();
-    const that = this;
-    const f = this.file;
-    const id = Math.random().toString(36).substring(2);
-    const filePath =
-        this.mittente.email + '/chats/' + this.destinatario.email + '/' + id;
-    this.ref = this.afStorage.ref(filePath);
-    this.task = this.ref.put(f);
-    this.uploadState = this.task.snapshotChanges().pipe(map(s => s.state));
-    this.uploadProgress = this.task.percentageChanges();
-    this.task.then(
-        snapshot => {
-          this.uploadState = of (null);
-          this.sendMessage(filePath).then(() => {
-            that.dismissLoading();
-            that.location.back();
-          })
-        },
-        err => {
-          this.toastService.makeToast(err.message);
-          that.dismissLoading();
-          console.log(err);
-        })
-  }
+
   async presentLoading() {
     this.loading = await this.loadingController.create(
         {message: 'Please Wait...', id: 'login'});
@@ -91,17 +95,6 @@ export class UploadPage {
   }
   async dismissLoading() { return await this.loading.dismiss(); }
 
-
-  sendMessage(media: string) {
-    const firebaseFunction =
-        firebase.functions().httpsCallable('sendMessageToUser');
-    const data: IMessage = {
-      'uid': this.destinatario.uid,
-      'media': media,
-      'text': this.message
-    };
-    return firebaseFunction(data);
-  }
   /* Read data from file */
   handleInputChange(e) {
     var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];

@@ -49,20 +49,20 @@ export class AddPostComponent implements OnInit {
     let post: IPost = {text: this.validations_form.get('text').value};
     this.presentLoading();
     const that = this;
-    this.storageService.uploadIfFile(this.file)
+    this.storageService.uploadIfFile(this.file, 'posts')
         .then((downloadURL) => {
           if (downloadURL) {
             post.media = downloadURL;
           }
           this.apiService.addPost(post).then(() => {
             that.dismissLoading();
-            this.output.emit(true);
+            that.output.emit(true);
           })
         })
         .catch(e => {
-          this.toastService.makeToast(e.message);
+          that.toastService.makeToast(e.message);
           that.dismissLoading();
-          this.output.emit(true);
+          that.output.emit(true);
           console.log(e);
         })
   }

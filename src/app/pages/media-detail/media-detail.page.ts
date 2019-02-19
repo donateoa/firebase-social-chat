@@ -12,34 +12,16 @@ import {Observable} from 'rxjs';
 export class MediaDetailPage implements OnInit {
   fileName: string;
   url: Observable<any>;
-  downloadUrl: any;
-  contentType: string;
+  media: any;
   constructor(
       public loadingController: LoadingController,
-      private afStorage: AngularFireStorage,
       private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
-    this.presentLoading();
     this.activatedRoute.queryParams.subscribe(params => {
       console.log(params);  // {media: "media"}
-      this.fileName = params['media'] ? params['media'] : null;
-      this.getDownloadURL()
+      this.media = params['media'] ? params['media'] : null;
     });
-  }
-
-  getDownloadURL() {
-    let ref = this.afStorage.ref(this.fileName);
-
-    ref.getMetadata().subscribe(t => {
-      this.contentType = t.contentType;
-      this.url = ref.getDownloadURL();
-      this.url.subscribe(t => this.downloadUrl = t);
-    });
-  }
-  async presentLoading() {
-    const loading = await this.loadingController.create({duration: 2000});
-    return await loading.present();
   }
 
   downloadFile() {
@@ -53,7 +35,7 @@ export class MediaDetailPage implements OnInit {
       a.download = fileName;
       a.dispatchEvent(new MouseEvent('click'));
     };
-    xhr.open('GET', this.downloadUrl);
+    xhr.open('GET', this.media);
     xhr.send();
   }
 }

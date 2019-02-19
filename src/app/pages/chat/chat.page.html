@@ -29,8 +29,9 @@
       [class.mine]="message.uid === user.uid">
       <div class="message">
         <a (click)="navigateToDetail(message.media)" class="media" *ngIf="message.media && !(message.$media | async)">
-          <ion-icon name="attach"></ion-icon>
-          Scarica allegato
+          <ion-thumbnail>
+            <img [src]="message.media" />
+          </ion-thumbnail>
         </a>
         <span class="speech-bubble" *ngIf="message.text">
           {{ message.text }}</span>
