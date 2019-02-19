@@ -11,7 +11,7 @@ import {SortType} from 'src/app/components/entity-filter/entity-filter.model';
 import {Principal} from 'src/app/services/Principal';
 import {ToastService} from 'src/app/services/toast.service';
 
-import {IUser} from '../users/user.model';
+import {IUser, User} from '../users/user.model';
 
 import {IMessage} from './message.model';
 
@@ -25,8 +25,8 @@ export class ChatPage implements OnDestroy {
   @ViewChild('textbox') textbox: any;
   message: string;
   messages: IMessage[] = [];
-  mittente: IUser;
-  destinatario: IUser;
+  mittente: User;
+  destinatario: User;
   destinatario$: Observable<IUser>;
   docRef: any;
   lastVisible: IMessage;
@@ -53,7 +53,7 @@ export class ChatPage implements OnDestroy {
       documentSnapshots.docs[documentSnapshots.docs.length - 1];
 
   updateRead() {
-    const url = `chats/${this.mittente.email}/list/${this.destinatario.email}`;
+    const url = `${this.mittente.getChats()}/${this.destinatario.email}`;
     firebase.firestore()
         .doc(url)
         .set({read: 0}, {merge: true})
@@ -68,7 +68,7 @@ export class ChatPage implements OnDestroy {
       this.destinatario$ = of (user);
       this.mittente = this.principal.identity();
       const url =
-          `chats/${this.mittente.email}/list/${this.destinatario.email}/messages`;
+          `${this.mittente.getChats()}/${this.destinatario.email}/messages`;
       console.log('subscribe to stream ', url);
 
       this.docRef = firebase.firestore().collection(url);

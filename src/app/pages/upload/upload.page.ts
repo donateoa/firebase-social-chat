@@ -12,7 +12,7 @@ import {Principal} from 'src/app/services/Principal';
 import {ToastService} from 'src/app/services/toast.service';
 
 import {IMessage} from '../chat/message.model';
-import {IUser} from '../users/user.model';
+import {IUser, User} from '../users/user.model';
 
 @Component({
   selector: 'app-upload',
@@ -30,7 +30,7 @@ export class UploadPage {
   uploading = false;
   downloadURL;
   message: string;
-  mittente: IUser;
+  mittente: User;
   destinatario: IUser;
   loading: any;
   constructor(
@@ -45,7 +45,7 @@ export class UploadPage {
       this.destinatario = user;
       this.mittente = this.principal.identity();
       const url =
-          `chats/${this.mittente.email}/list/${this.destinatario.email}/messages`;
+          `${this.mittente.getChats()}/${this.destinatario.email}/messages`;
       console.log('subscribe to stream ', url);
 
     });
