@@ -20,7 +20,7 @@ const routes: Routes = [{path: '', component: PostsPage}];
   declarations: [PostsPage],
   providers: [
     RestService,
-    {provide: 'collectionKeyBeforeLogin', useValue: 'posts'},
+    {provide: 'collectionKeyBeforeLogin', useValue: 'user-posts'},
     {provide: 'collectionKeyAfterLogin', useValue: 'list'},
   ]
 })

@@ -60,6 +60,7 @@ export class RestService<T> implements RestInterface {
   query(next?: boolean, filter?: IFilter): Observable<T[]> {
     const db = firebase.firestore();
     return this.getUrl().pipe(flatMap(url => {
+      console.log('Request for url:', url);
       if (!url) {
         return [];
       } else {

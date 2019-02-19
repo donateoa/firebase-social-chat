@@ -12,6 +12,12 @@
 
 
 <ion-content padding>
+  <div text-right>
+    <ion-button [routerLink]="['/posts','create']">
+      <ion-icon name="add"></ion-icon>
+      Aggiungi un nuovo post
+    </ion-button>
+  </div>
   <ng-container *ngIf="list as list else loading">
     <ion-card *ngFor="let item of list">
       <img [src]="item.media" *ngIf="item.media" />
@@ -37,7 +43,7 @@
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button routerLink="/posts/new">
+    <ion-fab-button [routerLink]="['/posts','create']">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

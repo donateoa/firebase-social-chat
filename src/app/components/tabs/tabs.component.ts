@@ -22,6 +22,6 @@ export class TabsComponent implements OnInit {
     this.notifications$ = observable.pipe(
         map((t: firebase.firestore.DocumentSnapshot) => t.data()));
     this.notifications$.subscribe(
-        {next(value) { console.log('value', value); }});
+        {next(value) { console.log('Receive Notificiation: ', value); }});
   }
 }
