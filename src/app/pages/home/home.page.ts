@@ -39,7 +39,11 @@ export class HomePage {
     this.transition();
   }
 
-  pageWillEnter() { this.transition(); }
+  pageWillEnter() {
+    this.transition();
+    this.bachecaService.onSnapshot().subscribe(
+        t => this.list = [...t.map(t => t.id), ...this.list]);
+  }
   transition() { this.loadPage(false); }
   getItemsByIds(itemsIds: any[]) {
     return combineLatest(itemsIds.map(id => this.postService.find(id)));

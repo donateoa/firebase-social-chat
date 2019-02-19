@@ -1,7 +1,7 @@
 import 'firebase/auth';
 
 import {Inject, Injectable, Optional} from '@angular/core';
-import {Observable, from, of } from 'rxjs';
+import {Observable, Subject, from, of } from 'rxjs';
 import {RestInterface} from 'src/app/services/rest.interface';
 
 import {flatMap,} from 'rxjs/operators';
@@ -57,7 +57,41 @@ export class RestService<T> implements RestInterface {
   }
 
   delete (id: number|string): Observable<T> { return null; }
-
+  // listen for realtime update
+  onSnapshot(next?: boolean, filter?: IFilter): Observable<T[]> {
+    const db = firebase.firestore();
+    const that = this;
+    return this.getUrl().pipe(flatMap(url => {
+      console.log('Listen  onSnapshotfor url:', url);
+      if (!url) {
+        return [];
+      } else {
+        let listRef: Query = db.collection(url);
+        if (filter) {
+          if (filter.value) {
+            listRef =
+                listRef.where(filter.field, filter.operator, filter.value);
+          }
+          if (filter.sort) {
+            listRef = listRef.orderBy(filter.field, filter.sort);
+          }
+        }
+        if (next) {
+          listRef = listRef.startAfter(this.lastVisible)
+        }
+        const subject: Subject<T[]> = new Subject();
+        listRef.limit(PAGE_SIZE).onSnapshot(function(querySnapshot) {
+          const list: T[] = [];
+          querySnapshot.forEach(function(doc) {
+            list.push(that.mapToObj(doc.data()));
+          });
+          subject.next(list);
+        });
+        return subject.asObservable();
+      }
+    }));
+  }
+  // get once
   query(next?: boolean, filter?: IFilter): Observable<T[]> {
     const db = firebase.firestore();
     return this.getUrl().pipe(flatMap(url => {

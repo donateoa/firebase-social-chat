@@ -1,12 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {IonContent} from '@ionic/angular';
-import {combineLatest} from 'rxjs';
 
 import {IFilter, SortType} from '../components/entity-filter/entity-filter.model';
-import {RestService} from '../services/rest.service';
 
 import {IPost} from './post.model';
-import {PostService} from './post.service';
 import {UserPostsService} from './user-post.service';
 
 @Component({
@@ -26,9 +23,7 @@ export class PostsPage implements OnInit {
   };
   filter: IFilter = this.defaultfilter;
   filterKeys: string[] = ['creationDate'];
-  constructor(
-      private postService: PostService,
-      private userPostsService: UserPostsService) {}
+  constructor(private userPostsService: UserPostsService) {}
 
   ngOnInit() {}
   changeFilter(criteria) {
@@ -40,7 +35,11 @@ export class PostsPage implements OnInit {
     this.transition();
   }
 
-  pageWillEnter() { this.transition(); }
+  pageWillEnter() {
+    this.transition();
+    this.userPostsService.onSnapshot().subscribe(
+        t => this.list = [...t.map(t => t.id), ...this.list])
+  }
   transition() { this.loadPage(false); }
 
   loadPage(append) {
