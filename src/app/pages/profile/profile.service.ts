@@ -10,7 +10,7 @@ import {IUser} from '../users/user.model';
 export class ProfileService extends RestService<IUser> {
   getUrl() {
     if (this.getAuthUser()) {
-      return of (`contacts/${this.getAuthUser().email}/list`);
+      return of (this.getAuthUser().getContacts());
     } else {
       return of (null);
     }
