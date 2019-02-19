@@ -17,7 +17,7 @@ export class TabsComponent implements OnInit {
 
   ngOnInit() {
     const user = this.principal.identity();
-    const docRef = firebase.firestore().doc(`notifications/${user.email}`);
+    const docRef = firebase.firestore().doc(user.getNotificationsDocument());
     let observable = Observable.create(observer => docRef.onSnapshot(observer));
     this.notifications$ = observable.pipe(
         map((t: firebase.firestore.DocumentSnapshot) => t.data()));

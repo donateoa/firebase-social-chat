@@ -11,8 +11,8 @@ import * as firebase from 'firebase/app';
 import {IFilter} from 'src/app/components/entity-filter/entity-filter.model';
 import 'firebase/functions';
 
-export function mapToUser(data: any): IUser {
-  const result: IUser = new User();
+export function mapToUser(data: any): User {
+  const result: User = new User();
   if (!data) {
     return null;
   }
@@ -47,7 +47,7 @@ export class UsersService implements RestInterface {
 
   delete (id: number|string): Observable<any> { return null; }
 
-  query(next?: boolean, filter?: IFilter): Observable<IUser[]> {
+  query(next?: boolean, filter?: IFilter): Observable<User[]> {
     const firebaseFunction = firebase.functions().httpsCallable('allUsers');
     const that = this;
     const data = {};

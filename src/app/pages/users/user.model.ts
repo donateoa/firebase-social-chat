@@ -20,4 +20,19 @@ export class User implements IUser {
     console.log(m);
     return m;
   }
+  getChats() {
+    const m = `chats/${this.email}/list`;
+    console.log(m);
+    return m;
+  }
+  getContactNotificationsList() {
+    const m = `notifications/${this.email}/contacts-request`;
+    console.log(m);
+    return m;
+  }
+  getNotificationsDocument() {
+    const m = `notifications/${this.email}`;
+    console.log(m);
+    return m;
+  }
 }

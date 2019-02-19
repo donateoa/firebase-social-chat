@@ -72,10 +72,10 @@ export class UsersPage implements OnInit {
       this.loadPage(true);
     }, 500);
   }
-  addToContact(user: IUser) {
-    const me: IUser = this.principal.identity();
+  addToContact(user: User) {
+    const me: User = this.principal.identity();
     if (me) {
-      const docRef = firebase.firestore().doc(`notifications/${user.email}`);
+      const docRef = firebase.firestore().doc(user.getNotificationsDocument());
 
       docRef.get()
           .then(

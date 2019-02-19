@@ -4,14 +4,14 @@ import {Injectable} from '@angular/core';
 import {of } from 'rxjs';
 import {RestService} from 'src/app/services/rest.service';
 
-import {IUser} from '../users/user.model';
+import {User} from '../users/user.model';
 
 
 @Injectable()
-export class ContactsService extends RestService<IUser> {
+export class ContactsService extends RestService<User> {
   getUrl() {
     if (this.getAuthUser()) {
-      return of (`contacts/${this.getAuthUser().email}/list`);
+      return of (this.getAuthUser().getContacts());
     } else {
       return of (null);
     }

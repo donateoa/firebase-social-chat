@@ -7,7 +7,7 @@ import * as firebase from 'firebase/app';
 import {IFilter, SortType} from 'src/app/components/entity-filter/entity-filter.model';
 import {Principal} from 'src/app/services/Principal';
 
-import {IUser} from '../users/user.model';
+import {IUser, User} from '../users/user.model';
 import {ChatService} from './chats.service';
 
 @Component({
@@ -42,8 +42,8 @@ export class ChatsPage implements OnInit {
   pageWillEnter() {
     this.transition();
     // reset num of notification must be read
-    const user = this.principal.identity();
-    const docRef = firebase.firestore().doc(`notification/${user.email}`);
+    const user: User = this.principal.identity();
+    const docRef = firebase.firestore().doc(user.getNotificationsDocument());
     docRef.set({'messages': 0}, {merge: true})
         .then(() => console.log('reset num of message must be read'))
         .catch((e) => console.log('error during reset message', e));

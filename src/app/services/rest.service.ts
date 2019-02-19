@@ -10,6 +10,8 @@ import {Query} from '@angular/fire/firestore';
 import * as firebase from 'firebase/app';
 import {IFilter} from 'src/app/components/entity-filter/entity-filter.model';
 import {PAGE_SIZE} from 'src/app.constants';
+import {mapToUser} from '../pages/users/users.service';
+import {User} from '../pages/users/user.model';
 // import {IUser, User} from '../pages/users/user.model';
 
 @Injectable()
@@ -17,7 +19,7 @@ export class RestService<T> implements RestInterface {
   lastVisible: T;
 
   constructor() {}
-  getAuthUser = () => firebase.auth().currentUser
+  getAuthUser = (): User => mapToUser(firebase.auth().currentUser)
   getUrl(): Observable<string> {
     // this function must be implemented in the exdented service.
     return of (null);
