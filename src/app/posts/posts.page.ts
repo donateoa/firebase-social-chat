@@ -1,9 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {IonContent} from '@ionic/angular';
+import {combineLatest} from 'rxjs';
 
 import {IFilter, SortType} from '../components/entity-filter/entity-filter.model';
 import {RestService} from '../services/rest.service';
+
 import {IPost} from './post.model';
+import {PostService} from './post.service';
+import {UserPostsService} from './user-post.service';
 
 @Component({
   selector: 'app-posts',
@@ -22,7 +26,9 @@ export class PostsPage implements OnInit {
   };
   filter: IFilter = this.defaultfilter;
   filterKeys: string[] = ['creationDate'];
-  constructor(private restService: RestService<IPost>) {}
+  constructor(
+      private postService: PostService,
+      private userPostsService: UserPostsService) {}
 
   ngOnInit() {}
   changeFilter(criteria) {
@@ -36,8 +42,11 @@ export class PostsPage implements OnInit {
 
   pageWillEnter() { this.transition(); }
   transition() { this.loadPage(false); }
+  getItemsByIds(itemsIds: any[]) {
+    return combineLatest(itemsIds.map(id => this.postService.find(id)));
+  }
   loadPage(append) {
-    this.restService.query(append, this.filter).subscribe(data => {
+    this.userPostsService.query(append, this.filter).subscribe(data => {
       console.log(data);
       if (data.length <= 0) {
         // disable infinite-scroll when data are fineshed
@@ -50,7 +59,10 @@ export class PostsPage implements OnInit {
         if (!append) {
           this.list = [];
         }
-        this.list = [...this.list, ...data];
+        this.getItemsByIds(data.map(t => t.id)).subscribe(posts => {
+          this.list = [...this.list, ...posts];
+          console.log('here are the data:', this.list);
+        });
         this.disabledInfiniteScroll = false;
       }
     });

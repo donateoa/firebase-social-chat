@@ -3,13 +3,12 @@ import 'firebase/firestore';
 
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {IonContent} from '@ionic/angular';
-import {User} from 'firebase';
 import * as firebase from 'firebase/app';
 import {IFilter, SortType} from 'src/app/components/entity-filter/entity-filter.model';
 import {Principal} from 'src/app/services/Principal';
-import {RestService} from 'src/app/services/rest.service';
 
 import {IUser} from '../users/user.model';
+import {ChatService} from './chats.service';
 
 @Component({
   selector: 'app-chats',
@@ -28,8 +27,7 @@ export class ChatsPage implements OnInit {
   };
   filter: IFilter = this.defaultfilter;
   filterKeys: string[] = ['uid', 'displayName', 'email'];
-  constructor(
-      private principal: Principal, private restService: RestService<IUser>) {}
+  constructor(private principal: Principal, private restService: ChatService) {}
 
   ngOnInit() {}
   changeFilter(criteria) {

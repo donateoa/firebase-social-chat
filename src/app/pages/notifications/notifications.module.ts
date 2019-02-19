@@ -6,6 +6,7 @@ import {IonicModule} from '@ionic/angular';
 import {RestService} from 'src/app/services/rest.service';
 
 import {NotificationsPage} from './notifications.page';
+import {NotificationsService} from './notifications.service';
 
 const routes: Routes = [{path: '', component: NotificationsPage}];
 
@@ -13,11 +14,7 @@ const routes: Routes = [{path: '', component: NotificationsPage}];
   imports:
       [CommonModule, FormsModule, IonicModule, RouterModule.forChild(routes)],
   declarations: [NotificationsPage],
-  providers: [
-    RestService,
-    {provide: 'collectionKeyBeforeLogin', useValue: 'notifications'},
-    {provide: 'collectionKeyAfterLogin', useValue: 'contacts-request'},
-  ]
+  providers: [NotificationsService]
 })
 export class NotificationsPageModule {
 }

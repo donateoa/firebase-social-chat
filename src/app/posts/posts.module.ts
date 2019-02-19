@@ -6,9 +6,10 @@ import {IonicModule} from '@ionic/angular';
 
 import {SearchModule} from '../components/search/search.module';
 import {TabsModule} from '../components/tabs/tabs.module';
-import {RestService} from '../services/rest.service';
 
+import {PostService} from './post.service';
 import {PostsPage} from './posts.page';
+import {UserPostsService} from './user-post.service';
 
 const routes: Routes = [{path: '', component: PostsPage}];
 
@@ -19,9 +20,8 @@ const routes: Routes = [{path: '', component: PostsPage}];
   ],
   declarations: [PostsPage],
   providers: [
-    RestService,
-    {provide: 'collectionKeyBeforeLogin', useValue: 'user-posts'},
-    {provide: 'collectionKeyAfterLogin', useValue: 'list'},
+    PostService,
+    UserPostsService,
   ]
 })
 export class PostsPageModule {

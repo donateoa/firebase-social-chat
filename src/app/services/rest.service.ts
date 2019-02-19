@@ -16,20 +16,11 @@ import {PAGE_SIZE} from 'src/app.constants';
 export class RestService<T> implements RestInterface {
   lastVisible: T;
 
-  constructor(
-
-      @Inject('collectionKeyBeforeLogin') public collectionKeyBeforeLogin?:
-          string,
-      @Inject('collectionKeyAfterLogin') public collectionKeyAfterLogin?:
-          string, ) {}
-
-  getUrl() {
-    if (firebase.auth().currentUser) {
-      return of (
-          `${this.collectionKeyBeforeLogin}/${firebase.auth().currentUser.email}/${this.collectionKeyAfterLogin}`);
-    } else {
-      return of (null);
-    }
+  constructor() {}
+  getAuthUser = () => firebase.auth().currentUser
+  getUrl(): Observable<string> {
+    // this function must be implemented in the exdented service.
+    return of (null);
   }
 
   mapToObj(data: any): T {
@@ -49,10 +40,18 @@ export class RestService<T> implements RestInterface {
 
   find(id: string): Observable<T> {
     const db = firebase.firestore();
-    return this.getUrl().pipe(flatMap(
-        url => url ? from(db.collection(url).doc(id).get().then(
-                         t => this.mapToObj(t.data()))) :
-                     null));
+    return this.getUrl().pipe(flatMap(url => {
+      if (url) {
+        const uri = `${url}/${id}`
+        console.log('Request for url:', uri);
+        return from(db.doc(uri).get().then(t => {
+          console.log('Get result for url:', uri, t.data());
+          return this.mapToObj(t.data())
+        }))
+      } else {
+        return null;
+      }
+    }));
   }
 
   delete (id: number|string): Observable<T> { return null; }

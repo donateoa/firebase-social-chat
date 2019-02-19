@@ -5,10 +5,10 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {IonContent, LoadingController} from '@ionic/angular';
 import * as firebase from 'firebase/app';
 import {Principal} from 'src/app/services/Principal';
-import {RestService} from 'src/app/services/rest.service';
 import {ToastService} from 'src/app/services/toast.service';
 
 import {INotification} from './notifications.model';
+import {NotificationsService} from './notifications.service';
 
 @Component({
   selector: 'app-notifications',
@@ -25,7 +25,7 @@ export class NotificationsPage implements OnInit {
       private principal: Principal,
       private loadingController: LoadingController,
       private toastService: ToastService,
-      private restService: RestService<INotification>) {}
+      private restService: NotificationsService) {}
 
   ngOnInit() {}
 

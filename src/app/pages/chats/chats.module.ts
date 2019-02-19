@@ -8,6 +8,7 @@ import {TabsModule} from 'src/app/components/tabs/tabs.module';
 import {RestService} from 'src/app/services/rest.service';
 
 import {ChatsPage} from './chats.page';
+import {ChatService} from './chats.service';
 
 const routes: Routes = [{path: '', component: ChatsPage}];
 
@@ -17,11 +18,7 @@ const routes: Routes = [{path: '', component: ChatsPage}];
     RouterModule.forChild(routes)
   ],
   declarations: [ChatsPage],
-  providers: [
-    RestService,
-    {provide: 'collectionKeyBeforeLogin', useValue: 'chats'},
-    {provide: 'collectionKeyAfterLogin', useValue: 'list'},
-  ]
+  providers: [ChatService]
 })
 export class ChatsPageModule {
 }

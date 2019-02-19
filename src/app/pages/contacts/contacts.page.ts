@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {IonContent} from '@ionic/angular';
 import {IFilter, SortType} from 'src/app/components/entity-filter/entity-filter.model';
-import {RestService} from 'src/app/services/rest.service';
 
-import {IUser, User} from '../users/user.model';
+import {User} from '../users/user.model';
+import {ContactsService} from './contacts.service';
 
 
 @Component({
@@ -23,7 +23,7 @@ export class ContactsPage implements OnInit {
   };
   filter: IFilter = this.defaultfilter;
   filterKeys: string[] = ['uid', 'displayName', 'email'];
-  constructor(private restService: RestService<IUser>) {}
+  constructor(private restService: ContactsService) {}
 
   ngOnInit() {}
   changeFilter(criteria) {
