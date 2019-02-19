@@ -1,4 +1,12 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
+import {IonContent} from '@ionic/angular';
+import {combineLatest} from 'rxjs';
+import {IFilter, SortType} from 'src/app/components/entity-filter/entity-filter.model';
+import {IPost} from 'src/app/posts/post.model';
+import {PostService} from 'src/app/posts/post.service';
+import {UserPostsService} from 'src/app/posts/user-post.service';
+
+import {BachecaService} from './bacheca.service';
 
 @Component({
   selector: 'app-home',
@@ -6,5 +14,63 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  @ViewChild(IonContent) content: IonContent;
+  list: IPost[];
+  disabledInfiniteScroll = true;
+  account: Account;
+  // set default sort
+  defaultfilter: IFilter = {
+    field: 'creationDate',
+    sort: SortType.ASC,
+  };
+  filter: IFilter = this.defaultfilter;
+  filterKeys: string[] = ['creationDate'];
+  constructor(
+      private postService: PostService,
+      private bachecaService: BachecaService) {}
 
+  ngOnInit() {}
+  changeFilter(criteria) {
+    if (criteria.filter) {
+      this.filter = criteria.filter;
+    } else {
+      this.filter = this.defaultfilter;
+    }
+    this.transition();
+  }
+
+  pageWillEnter() { this.transition(); }
+  transition() { this.loadPage(false); }
+  getItemsByIds(itemsIds: any[]) {
+    return combineLatest(itemsIds.map(id => this.postService.find(id)));
+  }
+  loadPage(append) {
+    this.bachecaService.query(append, this.filter).subscribe(data => {
+      console.log(data);
+      if (data.length <= 0) {
+        // disable infinite-scroll when data are fineshed
+        this.disabledInfiniteScroll = true;
+        // disable loading if present
+        if (!this.list) {
+          this.list = [];
+        }
+      } else {
+        if (!append) {
+          this.list = [];
+        }
+        this.getItemsByIds(data.map(t => t.id)).subscribe(posts => {
+          this.list = [...this.list, ...posts];
+          console.log('here are the data:', this.list);
+        });
+        this.disabledInfiniteScroll = false;
+      }
+    });
+  }
+  loadData(event) {
+    setTimeout(() => {
+      console.log('Done');
+      event.target.complete();
+      this.loadPage(true);
+    }, 500);
+  }
 }

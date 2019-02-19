@@ -28,8 +28,6 @@ export class NotificationsPage implements OnInit {
       private restService: NotificationsService) {}
 
   ngOnInit() {}
-
-
   pageWillEnter() {
     this.transition();
     // reset num of notification must be read

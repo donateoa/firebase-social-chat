@@ -2,16 +2,15 @@ import 'firebase/auth';
 
 import {Inject, Injectable} from '@angular/core';
 import {of } from 'rxjs';
+import {RestService} from 'src/app/services/rest.service';
 
-import {RestService} from '../services/rest.service';
 
-import {IPost} from './post.model';
 
 @Injectable()
-export class UserPostsService extends RestService<any> {
+export class BachecaService extends RestService<any> {
   getUrl() {
     if (this.getAuthUser()) {
-      return of (this.getAuthUser().getUserPosts());
+      return of (this.getAuthUser().getBacheca());
     } else {
       return of (null);
     }

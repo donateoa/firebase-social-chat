@@ -20,6 +20,11 @@ export class User implements IUser {
     console.log(m);
     return m;
   }
+  getUserPosts() {
+    const m = `user-posts/${this.email}/list`;
+    console.log(m);
+    return m;
+  }
   getChats() {
     const m = `chats/${this.email}/list`;
     console.log(m);

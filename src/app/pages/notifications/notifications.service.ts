@@ -10,7 +10,7 @@ import {INotification} from './notifications.model';
 export class NotificationsService extends RestService<INotification> {
   getUrl() {
     if (this.getAuthUser()) {
-      return of (this.getAuthUser().getContacts());
+      return of (this.getAuthUser().getContactNotificationsList());
     } else {
       return of (null);
     }
