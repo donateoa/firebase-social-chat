@@ -2,9 +2,8 @@ import {Component, ViewChild} from '@angular/core';
 import {IonContent} from '@ionic/angular';
 import {combineLatest} from 'rxjs';
 import {IFilter, SortType} from 'src/app/components/entity-filter/entity-filter.model';
-import {IPost} from 'src/app/posts/post.model';
+import {IPost} from 'src/app/model/post.model';
 import {PostService} from 'src/app/posts/post.service';
-import {UserPostsService} from 'src/app/posts/user-post.service';
 
 import {BachecaService} from './bacheca.service';
 

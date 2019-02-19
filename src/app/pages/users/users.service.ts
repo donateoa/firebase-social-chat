@@ -1,15 +1,13 @@
+import 'firebase/firestore';
+import 'firebase/functions';
+
 import {Injectable} from '@angular/core';
-import {Observable, from, of } from 'rxjs';
+import * as firebase from 'firebase/app';
+import {Observable, from} from 'rxjs';
+import {IFilter} from 'src/app/components/entity-filter/entity-filter.model';
 import {RestInterface} from 'src/app/services/rest.interface';
 
 import {IUser, User} from '../users/user.model';
-
-import {flatMap,} from 'rxjs/operators';
-import 'firebase/firestore';
-
-import * as firebase from 'firebase/app';
-import {IFilter} from 'src/app/components/entity-filter/entity-filter.model';
-import 'firebase/functions';
 
 export function mapToUser(data: any): User {
   const result: User = new User();
@@ -24,13 +22,13 @@ export function mapToUser(data: any): User {
 }
 
 @Injectable({providedIn: 'root'})
-export class UsersService implements RestInterface {
+export class UsersService implements RestInterface<User> {
   constructor() {}
   lastVisible: string;
 
-  create(data: any): Observable<any> { return null; }
+  create(data: User): Observable<User> { return null; }
 
-  update(data: any): Observable<any> { return null; }
+  update(data: User): Observable<User> { return null; }
 
   findByEmail(email: string): Observable<IUser> {
     const firebaseFunction = firebase.functions().httpsCallable('getUser');
@@ -38,7 +36,7 @@ export class UsersService implements RestInterface {
     return from(
         firebaseFunction(data).then(response => mapToUser(response.data)));
   }
-  find(id: string): Observable<IUser> {
+  find(id: string): Observable<User> {
     const firebaseFunction = firebase.functions().httpsCallable('getUser');
     const data = {uid: id};
     return from(

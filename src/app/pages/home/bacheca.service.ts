@@ -10,9 +10,9 @@ import {RestService} from 'src/app/services/rest.service';
 export class BachecaService extends RestService<any> {
   getUrl() {
     if (this.getAuthUser()) {
-      return of (this.getAuthUser().getBacheca());
+      return this.getAuthUser().getBacheca();
     } else {
-      return of (null);
+      return null;
     }
   }
 }

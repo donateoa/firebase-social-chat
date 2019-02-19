@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {IonContent} from '@ionic/angular';
+import {IPost} from 'src/app/model/post.model';
 
 import {IFilter, SortType} from '../components/entity-filter/entity-filter.model';
 
-import {IPost} from './post.model';
 import {UserPostsService} from './user-post.service';
 
 @Component({
@@ -37,8 +37,8 @@ export class PostsPage implements OnInit {
 
   pageWillEnter() {
     this.transition();
-    this.userPostsService.onSnapshot().subscribe(
-        t => this.list = [...t.map(t => t.id), ...this.list])
+    // this.userPostsService.onSnapshot().subscribe(
+    //     t => this.list = [...t.map(t => t.id), ...this.list])
   }
   transition() { this.loadPage(false); }
 

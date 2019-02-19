@@ -11,9 +11,9 @@ import {User} from '../users/user.model';
 export class ContactsService extends RestService<User> {
   getUrl() {
     if (this.getAuthUser()) {
-      return of (this.getAuthUser().getContacts());
+      return this.getAuthUser().getContacts();
     } else {
-      return of (null);
+      return null;
     }
   }
 }

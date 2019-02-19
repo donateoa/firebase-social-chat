@@ -2,9 +2,9 @@ import 'firebase/functions'
 
 import {Injectable} from '@angular/core';
 import * as firebase from 'firebase/app';
+import {IPost} from 'src/app/model/post.model';
 
 import {IMessage} from '../pages/chat/message.model';
-import {IPost} from '../posts/post.model';
 
 @Injectable({providedIn: 'root'})
 export class ApiService {

@@ -11,9 +11,9 @@ import {IUser} from '../users/user.model';
 export class ChatService extends RestService<IUser> {
   getUrl() {
     if (this.getAuthUser()) {
-      return of (this.getAuthUser().getChats());
+      return this.getAuthUser().getChats();
     } else {
-      return of (null);
+      return null;
     }
   }
 }

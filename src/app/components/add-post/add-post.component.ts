@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {LoadingController} from '@ionic/angular';
-import {IPost} from 'src/app/posts/post.model';
+import {IPost} from 'src/app/model/post.model';
 import {ApiService} from 'src/app/services/api.service';
 import {StorageService} from 'src/app/services/storage.service';
 import {ToastService} from 'src/app/services/toast.service';
