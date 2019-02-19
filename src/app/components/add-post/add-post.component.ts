@@ -1,17 +1,10 @@
-import 'firebase/functions'
-
-import {Location} from '@angular/common';
-import {Component, OnInit} from '@angular/core';
-import {AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask} from '@angular/fire/storage';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {LoadingController} from '@ionic/angular';
-import * as firebase from 'firebase/app';
-import {Observable, of } from 'rxjs';
-import {map} from 'rxjs/operators';
-import {Principal} from 'src/app/services/Principal';
+import {IPost} from 'src/app/posts/post.model';
+import {ApiService} from 'src/app/services/api.service';
+import {StorageService} from 'src/app/services/storage.service';
 import {ToastService} from 'src/app/services/toast.service';
-
-import {IPost} from '../post.model';
 
 export const atLeastOne = (validator: ValidatorFn) =>
     (group: FormGroup, ): ValidationErrors | null => {
@@ -24,14 +17,12 @@ export const atLeastOne = (validator: ValidatorFn) =>
     };
 
 @Component({
-  selector: 'app-create',
-  templateUrl: './create.page.html',
-  styleUrls: ['./create.page.scss'],
+  selector: 'app-add-post',
+  templateUrl: './add-post.component.html',
+  styleUrls: ['./add-post.component.scss']
 })
-export class CreatePage implements OnInit {
-  ref: AngularFireStorageReference;
-  uploadProgress: Observable<number>;
-  uploadState: Observable<string>;
+export class AddPostComponent implements OnInit {
+  @Output() output: EventEmitter<any> = new EventEmitter();
   file;
   fileAsDataURL;
   contentType: string;
@@ -40,66 +31,45 @@ export class CreatePage implements OnInit {
   validations_form: FormGroup;
 
   constructor(
-      private principal: Principal, public formBuilder: FormBuilder,
-      private loadingController: LoadingController, private location: Location,
+      public formBuilder: FormBuilder,
+      private loadingController: LoadingController,
       private toastService: ToastService,
-      private afStorage: AngularFireStorage) {}
+      private storageService: StorageService, private apiService: ApiService) {}
 
   ngOnInit() {
     this.validations_form = this.formBuilder.group(
         {
           text: [''],
-          title: [''],
           file: [''],
         },
         {validator: atLeastOne(Validators.required)});
   }
   getDownloadURL(fileName) {
     const p = new Promise<string>((resolve, reject) => {
-      let ref = this.afStorage.ref(fileName);
-      ref.getDownloadURL().subscribe(t => resolve(t), e => reject(e));
+      this.storageService.getDownloadURL(fileName).subscribe(
+          t => resolve(t), e => reject(e));
     });
     return p;
   }
 
-  uploadIfFile(): Promise<string> {
-    const p = new Promise<string>((resolve, reject) => {
-      if (this.file) {
-        const f = this.file;
-        const id = Math.random().toString(36).substring(2);
-        const mittente = this.principal.identity();
-        const filePath = mittente.email + '/posts/' + id;
-        this.ref = this.afStorage.ref(filePath);
-        const task = this.ref.put(f);
-        this.uploadState = task.snapshotChanges().pipe(map(s => s.state));
-        this.uploadProgress = task.percentageChanges();
-        task.then(() => this.getDownloadURL(filePath))
-            .then((downloadURL) => resolve(downloadURL))
-            .catch(e => reject(e));
-      } else {
-        resolve(null);
-      }
-    });
-    return p;
-  }
   sendPost() {
     let post: IPost = {text: this.validations_form.get('text').value};
     this.presentLoading();
     const that = this;
-    this.uploadIfFile()
+    this.storageService.uploadIfFile(this.file)
         .then((downloadURL) => {
           if (downloadURL) {
             post.media = downloadURL;
           }
-          this.uploadState = of (null);
-          this.addPost(post).then(() => {
+          this.apiService.addPost(post).then(() => {
             that.dismissLoading();
-            that.location.back();
+            this.output.emit(true);
           })
         })
         .catch(e => {
           this.toastService.makeToast(e.message);
           that.dismissLoading();
+          this.output.emit(true);
           console.log(e);
         })
   }
@@ -110,11 +80,6 @@ export class CreatePage implements OnInit {
   }
   async dismissLoading() { return await this.loading.dismiss(); }
 
-
-  addPost(post: IPost) {
-    const firebaseFunction = firebase.functions().httpsCallable('createPost');
-    return firebaseFunction(post);
-  }
   /* Read data from file */
   handleInputChange(e) {
     var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];

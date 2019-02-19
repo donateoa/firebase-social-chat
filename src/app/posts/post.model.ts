@@ -1,7 +1,6 @@
 import {IUser} from '../pages/users/user.model';
 
 export interface IPost extends IUser {
-  title?: string;
   text?: string;
   media?: string;
   creationDate?: any;

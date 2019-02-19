@@ -1,0 +1,22 @@
+<form [formGroup]="validations_form">
+  <div *ngIf="fileAsDataURL">
+    <ion-thumbnail>
+      <img [src]="fileAsDataURL" />
+    </ion-thumbnail>
+  </div>
+  <ion-item>
+    <ion-label position="floating">Aggiungi un commento</ion-label>
+    <ion-input type="textarea" formControlName="text"></ion-input>
+    <ion-buttons slot="end">
+      <ion-button (click)="sendPost()" [disabled]="validations_form.invalid">
+        <ion-icon name="md-send"></ion-icon>
+      </ion-button>
+      <div class="fileUpload">
+        <ion-icon name="attach" color="primary"></ion-icon>
+        <input class="upload" type="file" type="file" (change)="handleInputChange($event)" formControlName="file"
+          accept=".png,.jpg" />
+      </div>
+    </ion-buttons>
+  </ion-item>
+
+</form>

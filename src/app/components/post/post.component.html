@@ -1,0 +1,30 @@
+<ng-container *ngIf="(post$ | async) as item else loading">
+  <ion-card>
+    <ion-card-title>
+      <ion-item lines="none">
+        <ion-avatar>
+          <img src="/assets/images/profile/user.svg" *ngIf="!item.photoURL">
+          <img [src]="item.photoURL" *ngIf="item.photoURL">
+        </ion-avatar>
+        <ion-label>
+          <h3>{{item.displayName}} </h3>
+          <small text-rigth> {{item.creationDate.seconds * 1000 | date:'d MMM, h:mm a'  }} </small>
+        </ion-label>
+      </ion-item>
+    </ion-card-title>
+    <ion-card-content>
+      <ion-img [src]="item.media" *ngIf="item.media"></ion-img>
+      <h2> {{item.title}}</h2>
+      <p>
+        {{item.text}}
+      </p>
+    </ion-card-content>
+  </ion-card>
+</ng-container>
+<ng-template #loading>
+  <ion-card>
+    <ion-card-content>
+      <div class="empty"></div>
+    </ion-card-content>
+  </ion-card>
+</ng-template>

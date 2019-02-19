@@ -58,10 +58,7 @@ export class HomePage {
         if (!append) {
           this.list = [];
         }
-        this.getItemsByIds(data.map(t => t.id)).subscribe(posts => {
-          this.list = [...this.list, ...posts];
-          console.log('here are the data:', this.list);
-        });
+        this.list = [...this.list, ...data.map(t => t.id)];
         this.disabledInfiniteScroll = false;
       }
     });
