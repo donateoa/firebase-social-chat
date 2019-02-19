@@ -44,13 +44,6 @@ export class AddPostComponent implements OnInit {
         },
         {validator: atLeastOne(Validators.required)});
   }
-  getDownloadURL(fileName) {
-    const p = new Promise<string>((resolve, reject) => {
-      this.storageService.getDownloadURL(fileName).subscribe(
-          t => resolve(t), e => reject(e));
-    });
-    return p;
-  }
 
   sendPost() {
     let post: IPost = {text: this.validations_form.get('text').value};

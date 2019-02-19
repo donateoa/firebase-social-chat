@@ -42,9 +42,7 @@ export class PostsPage implements OnInit {
 
   pageWillEnter() { this.transition(); }
   transition() { this.loadPage(false); }
-  getItemsByIds(itemsIds: any[]) {
-    return combineLatest(itemsIds.map(id => this.postService.find(id)));
-  }
+
   loadPage(append) {
     this.userPostsService.query(append, this.filter).subscribe(data => {
       console.log(data);
@@ -59,10 +57,7 @@ export class PostsPage implements OnInit {
         if (!append) {
           this.list = [];
         }
-        this.getItemsByIds(data.map(t => t.id)).subscribe(posts => {
-          this.list = [...this.list, ...posts];
-          console.log('here are the data:', this.list);
-        });
+        this.list = [...this.list, ...data.map(t => t.id)];
         this.disabledInfiniteScroll = false;
       }
     });

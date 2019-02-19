@@ -4,6 +4,8 @@ import {FormsModule} from '@angular/forms';
 import {RouterModule, Routes} from '@angular/router';
 import {IonicModule} from '@ionic/angular';
 
+import {AddPostModule} from '../components/add-post/add-post.module';
+import {PostModule} from '../components/post/post.module';
 import {SearchModule} from '../components/search/search.module';
 import {TabsModule} from '../components/tabs/tabs.module';
 
@@ -16,7 +18,7 @@ const routes: Routes = [{path: '', component: PostsPage}];
 @NgModule({
   imports: [
     TabsModule, SearchModule, CommonModule, FormsModule, IonicModule,
-    RouterModule.forChild(routes)
+    PostModule, AddPostModule, RouterModule.forChild(routes)
   ],
   declarations: [PostsPage],
   providers: [
