@@ -41,10 +41,9 @@ export class PostComponent implements OnInit {
                              comments => comments.sort(
                                  (a, b) => a.creationDate - b.creationDate)));
     this.list$ = combineLatest(this.comments$, this.clicks$)
-                     .pipe(map(([comments, toggleState]) => {
-                       console.log(comments);
-                       return (toggleState ? comments : comments.slice(-3));
-                     }));
+                     .pipe(map(
+                         ([comments, toggleState]) =>
+                             (toggleState ? comments : comments.slice(-3))));
   }
   get postId(){return this._postId};
 
@@ -52,15 +51,10 @@ export class PostComponent implements OnInit {
       private postService: PostService,
       private postCommentsService: PostCommentsService,
       private principal: Principal) {}
-  ngOnInit(): void {
-    this.clicks$.subscribe(a => console.log('clicked', a));
-    this.comments$.subscribe(a => console.log('comments', a));
-    this.list$.subscribe(a => console.log('list', a));
-  }
+  ngOnInit(): void {}
 
   toggleCommentClick(event: Event) { this.clicks.next(event); }
   addComment() {
-    console.log(this.comment);
     const data: PostComment =
         Object.assign(this.principal.identity(), {text: this.comment});
     this.postCommentsService.create(this.postId, data);

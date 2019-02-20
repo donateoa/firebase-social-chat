@@ -3,3 +3,11 @@
     border:1px solid rgb(168, 167, 167);
     height: 200px;
 }
+ion-thumbnail {
+    min-width: 7rem;    
+    min-height: 7rem;
+    img {
+        max-width: 7rem;    
+        min-width: 7rem;
+    }
+}
