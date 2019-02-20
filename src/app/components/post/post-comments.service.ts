@@ -8,8 +8,6 @@ import {RestService} from 'src/app/services/rest.service';
 
 @Injectable()
 export class PostCommentsService {
-  list: PostComment[];
-
   getPostCommentUrl = (id: string) => `posts/${id}/comments`;
   create(postId: string, postComment: PostComment): Observable<PostComment> {
     const db = firebase.firestore();
@@ -28,27 +26,22 @@ export class PostCommentsService {
     }
   }
   // listen for realtime update
-  onSnapshot(postId: string): Observable<PostComment[]> {
+  onSnapshot(postId: string): Observable<PostComment> {
     const db = firebase.firestore();
     const url = this.getPostCommentUrl(postId);
-    const that = this;
-    this.list = [];
-    console.log('Listen  onSnapshotfor url:', url);
     if (!url) {
       return of (null);
     } else {
       let listRef = db.collection(url);
-      const subject: Subject<PostComment[]> = new Subject();
-
-      listRef.onSnapshot(function(querySnapshot) {
-        querySnapshot.docChanges().forEach(change => {
-          if (change.type === 'added') {
-            that.list.push(change.doc.data());
-          }
+      return Observable.create(subscriber => {
+        listRef.onSnapshot((querySnapshot) => {
+          querySnapshot.docChanges().forEach(change => {
+            if (change.type === 'added') {
+              subscriber.next(change.doc.data());
+            }
+          });
         });
-        subject.next(that.list);
       });
-      return subject.asObservable();
     }
   }
 }

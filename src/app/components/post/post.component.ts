@@ -1,7 +1,8 @@
 import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {IonButton} from '@ionic/angular';
-import {Observable, Subject, combineLatest, fromEvent} from 'rxjs';
-import {map, scan, startWith} from 'rxjs/operators';
+import {delay} from 'q';
+import {Observable, Subject, combineLatest, fromEvent, interval, of } from 'rxjs';
+import {concatMap, flatMap, map, mergeMap, scan, startWith} from 'rxjs/operators';
 import {PostComment} from 'src/app/model/post-comment.model';
 import {Post} from 'src/app/model/post.model';
 import {Principal} from 'src/app/services/Principal';
@@ -19,7 +20,7 @@ export class PostComponent implements OnInit {
 
   post$: Observable<Post>;
   comment: string;
-  comments$: Observable<PostComment[]>;
+  comments: PostComment[];
   // handle toogle button show/hide more detail
   clicks = new Subject<Event>();
   toggleState = currentState => !currentState;
@@ -31,27 +32,35 @@ export class PostComponent implements OnInit {
 
   // define a stream with combineLatest to show more or less comments
   list$: Observable<PostComment[]>;
+  incomingData$: Observable<any>;
 
   @Input()
-  set postId(postId: any) {
-    this._postId = postId;
-    this.post$ = this.postService.find(this._postId);
-    this.comments$ = this.postCommentsService.onSnapshot(this._postId)
-                         .pipe(map(
-                             comments => comments.sort(
-                                 (a, b) => a.creationDate - b.creationDate)));
-    this.list$ = combineLatest(this.comments$, this.clicks$)
-                     .pipe(map(
-                         ([comments, toggleState]) =>
-                             (toggleState ? comments : comments.slice(-3))));
-  }
+  set postId(postId: any) { this._postId = postId; }
   get postId(){return this._postId};
 
   constructor(
       private postService: PostService,
       private postCommentsService: PostCommentsService,
       private principal: Principal) {}
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.post$ = this.postService.find(this._postId);
+    this.comments = [];
+    //
+    const makeOf = (t) => of (t);
+    this.incomingData$ =
+        this.postCommentsService.onSnapshot(this._postId)
+            .pipe(
+                mergeMap(t => makeOf(t)),
+                scan<PostComment>((all, cur) => [...all, cur], []),
+                map(t => t.sort((a, b) => a.creationDate - b.creationDate)));
+
+    this.list$ = combineLatest(this.incomingData$, this.clicks$)
+                     .pipe(map(
+                         ([comments, toggleState]) =>
+                             (toggleState ? comments : comments.slice(-3))));
+
+    this.list$.subscribe((a) => console.log('list:', a));
+  }
 
   toggleCommentClick(event: Event) { this.clicks.next(event); }
   addComment() {
