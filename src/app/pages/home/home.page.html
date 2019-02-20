@@ -12,25 +12,22 @@
 
 
 <ion-content padding>
-  <app-add-post></app-add-post>
-  <ng-container *ngIf="list as list else loading">
-    <ng-container *ngFor="let item of list">
-      <app-post [postId]="item"></app-post>
+  <div class="container">
+    <app-add-post></app-add-post>
+    <ng-container *ngIf="list as list else loading">
+      <ng-container *ngFor="let item of list">
+        <app-post [postId]="item"></app-post>
+      </ng-container>
     </ng-container>
-  </ng-container>
-  <ng-template #loading>
-    <ion-item text-center lines="none">
-      <ion-spinner></ion-spinner>
-    </ion-item>
-  </ng-template>
+    <ng-template #loading>
+      <ion-item text-center lines="none">
+        <ion-spinner></ion-spinner>
+      </ion-item>
+    </ng-template>
 
-  <ion-infinite-scroll [disabled]="disabledInfiniteScroll" (ionInfinite)="loadData($event)" position="bottom">
-    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
-    </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button [routerLink]="['/posts','create']">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+    <ion-infinite-scroll [disabled]="disabledInfiniteScroll" (ionInfinite)="loadData($event)" position="bottom">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
 </ion-content>

@@ -7,7 +7,7 @@ import {AddPostModule} from 'src/app/components/add-post/add-post.module';
 import {PostModule} from 'src/app/components/post/post.module';
 import {SearchModule} from 'src/app/components/search/search.module';
 import {TabsModule} from 'src/app/components/tabs/tabs.module';
-import {PostService} from 'src/app/posts/post.service';
+import {PostService} from 'src/app/services/post.service';
 
 import {BachecaService} from './bacheca.service';
 import {HomePage} from './home.page';

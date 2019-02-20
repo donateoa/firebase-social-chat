@@ -5,11 +5,12 @@
     </ion-thumbnail>
   </div>
   <ion-item>
-    <ion-label position="floating">Aggiungi un post</ion-label>
+    <ion-label position="stacked">Aggiungi un post</ion-label>
     <ion-input type="textarea" (keyup)="onKey($event)" formControlName="text"></ion-input>
     <ion-buttons slot="end">
-      <ion-button (click)="sendPost()" [disabled]="validations_form.invalid">
-        <ion-icon name="md-send"></ion-icon>
+      <ion-button (click)="sendPost()" [disabled]="validations_form.invalid" color="primary" size="small"
+        fill="outline">
+        Pubblica
       </ion-button>
       <div class="fileUpload">
         <ion-icon name="attach" color="primary"></ion-icon>

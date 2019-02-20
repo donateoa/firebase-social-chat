@@ -70,7 +70,7 @@ const routes: Routes = [
   },
   {
     path: 'posts',
-    loadChildren: './posts/posts.module#PostsPageModule',
+    loadChildren: './pages/posts/posts.module#PostsPageModule',
     canActivate: [AuthGuardService],
   }
 ];

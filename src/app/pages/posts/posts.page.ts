@@ -1,10 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {IonContent} from '@ionic/angular';
+import {IFilter, SortType} from 'src/app/components/entity-filter/entity-filter.model';
 import {IPost} from 'src/app/model/post.model';
-
-import {IFilter, SortType} from '../components/entity-filter/entity-filter.model';
-
-import {UserPostsService} from './user-post.service';
+import {UserPostsService} from 'src/app/services/user-post.service';
 
 @Component({
   selector: 'app-posts',

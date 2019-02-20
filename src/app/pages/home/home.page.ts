@@ -3,7 +3,7 @@ import {IonContent} from '@ionic/angular';
 import {combineLatest} from 'rxjs';
 import {IFilter, SortType} from 'src/app/components/entity-filter/entity-filter.model';
 import {IPost} from 'src/app/model/post.model';
-import {PostService} from 'src/app/posts/post.service';
+import {PostService} from 'src/app/services/post.service';
 
 import {BachecaService} from './bacheca.service';
 

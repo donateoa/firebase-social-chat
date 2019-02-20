@@ -8,7 +8,7 @@
         </ion-avatar>
         <ion-label>
           <h3>{{item.displayName}} </h3>
-          <small text-rigth> {{item.creationDate.seconds * 1000 | date:'d MMM, h:mm a'  }} </small>
+          <p text-rigth> <small>{{item.creationDate.seconds * 1000 | date:'d MMM, h:mm a'  }}</small> </p>
         </ion-label>
       </ion-item>
     </ion-card-title>
@@ -18,7 +18,18 @@
       <p>
         {{item.text}}
       </p>
-      <ion-list>
+      <ion-list lines="none">
+        <ion-item *ngFor="let comment of comments$ | async">
+          <ion-avatar>
+            <img src="/assets/images/profile/user.svg" *ngIf="!item.photoURL">
+            <img [src]="comment.photoURL" *ngIf="comment.photoURL">
+          </ion-avatar>
+          <ion-label>
+            <h2>{{comment.displayName}} </h2>
+            <h3>{{comment.text}}</h3>
+            <p text-rigth> <small>{{item.creationDate.seconds * 1000 | date:'d MMM, h:mm a'  }}</small> </p>
+          </ion-label>
+        </ion-item>
         <ion-item>
           <ion-label position="floating">Aggiungi un commento</ion-label>
           <ion-input type="textarea" (keyup)="onKey($event)" [(ngModel)]="comment"></ion-input>
