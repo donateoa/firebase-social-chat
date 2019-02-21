@@ -13,7 +13,7 @@
 <ion-content padding>
   <ion-list>
     <ng-container *ngIf="list as list else loading">
-      <ion-item *ngFor="let item of list">
+      <ion-item *ngFor="let item of list" [routerLink]="['/profile', item.uid]">
         <ion-avatar>
           <img src="/assets/images/profile/user.svg" *ngIf="!item.photoURL">
           <img [src]="item.photoURL" *ngIf="item.photoURL">

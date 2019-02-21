@@ -46,14 +46,14 @@ export class HomePage {
 
     // get first page of data
     const firstPage = this.bachecaService.query(false, this.filter)
-    tap(t => console.log('first page loaded', t));
+    tap(t => console.log('First page loaded.'));
 
     // map the data fetched on scroll as streem
     const scrols$ = this.scrols.asObservable().pipe(
 
         debounceTime(500),
 
-        tap(t => console.log('streamed scroll', t)),
+        tap(t => console.log('Streamed scroll emitted.')),
 
         mergeMap(
             event => this.bachecaService.query(true, this.filter)
@@ -82,19 +82,17 @@ export class HomePage {
                       map(t => t.sort(
                               (a, b) => b.creationDate.seconds -
                                   a.creationDate.seconds)),
-                      tap(list => console.log('onsnapshot query', list)), );
+                      tap(list => console.log('onChange handler finished.')), );
 
         })
 
-        // this.listeningOnchange$.subscribe(console.log);
-        // this.scrols.subscribe(console.log);
 
-        this.list$ =
+            this.list$ =
         merge(firstPage, scrols$)
             .pipe(
                 scan<Post[]>((all, cur) => [...all, ...cur]),
 
-                tap(list => console.log('streamed query', list)),
+                tap(list => console.log('Merged list observable emitted.')),
 
                 tap(list => list.sort(
                         (a, b) =>
@@ -102,8 +100,5 @@ export class HomePage {
 
                 tap(list => this.disabledInfiniteScroll = list.length <= 0));
   }
-  emitScroll(event) {
-    console.log('scroll', event);
-    this.scrols.next(event);
-  }
+  emitScroll(event) { this.scrols.next(event); }
 }

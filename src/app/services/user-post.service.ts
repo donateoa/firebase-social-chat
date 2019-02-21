@@ -6,11 +6,7 @@ import {RestService} from '../services/rest.service';
 
 @Injectable()
 export class UserPostsService extends RestService<any> {
-  getUrl() {
-    if (this.getAuthUser()) {
-      return this.getAuthUser().getUserPosts();
-    } else {
-      return null;
-    }
-  }
+  private _url;
+  setUrl(url: String) { this._url = url; }
+  getUrl() { return this._url; }
 }

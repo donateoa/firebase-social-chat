@@ -1,7 +1,7 @@
 <ng-container *ngIf="(post$ | async) as item else loading">
   <ion-card>
     <ion-card-title>
-      <ion-item lines="none">
+      <ion-item lines="none" [routerLink]="['/profile', item.uid]">
         <ion-avatar>
           <img src="/assets/images/profile/user.svg" *ngIf="!item.photoURL">
           <img [src]="item.photoURL" *ngIf="item.photoURL">

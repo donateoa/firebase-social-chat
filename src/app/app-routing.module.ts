@@ -2,8 +2,11 @@ import {Injectable, NgModule} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterModule, RouterStateSnapshot, Routes} from '@angular/router';
 import {of } from 'rxjs';
 
+import {Profile} from './model/profile.model';
+import {ProfileService} from './pages/profile/profile.service';
 import {IUser} from './pages/users/user.model';
 import {UsersService} from './pages/users/users.service';
+import {Principal} from './services/Principal';
 import {AuthGuardService} from './services/auth-guard.service';
 
 @Injectable({providedIn: 'root'})
@@ -18,6 +21,38 @@ export class UserResolve implements Resolve<IUser> {
     return of (null);
   }
 }
+@Injectable({providedIn: 'root'})
+export class ResolveMe implements Resolve<IUser> {
+  constructor(private principal: Principal) {}
+
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    return of (this.principal.identity())
+  }
+}
+
+@Injectable({providedIn: 'root'})
+export class ResolveMyProfile implements Resolve<Profile> {
+  constructor(
+      private profileService: ProfileService, private principal: Principal) {}
+
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    return this.profileService.find(this.principal.identity().email);
+  }
+}
+@Injectable({providedIn: 'root'})
+export class ProfileResolve implements Resolve<Profile> {
+  constructor(
+      private profileService: ProfileService, private principal: Principal) {}
+
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    const uid = route.params['uid'] ? route.params['uid'] : null;
+    if (uid) {
+      return this.profileService.find(uid);
+    }
+    return of (null);
+  }
+}
+
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'}, {
     path: 'home',
@@ -37,7 +72,14 @@ const routes: Routes = [
   {
     path: 'profile',
     canActivate: [AuthGuardService],
-    loadChildren: './pages/profile/profile.module#ProfilePageModule'
+    loadChildren: './pages/profile/profile.module#ProfilePageModule',
+    resolve: {profile: ResolveMyProfile, user: ResolveMe},
+  },
+  {
+    path: 'profile/:uid',
+    canActivate: [AuthGuardService],
+    loadChildren: './pages/profile/profile.module#ProfilePageModule',
+    resolve: {profile: ProfileResolve, user: UserResolve},
   },
   {
     path: 'notifications',
@@ -67,11 +109,6 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
     loadChildren:
         './pages/media-detail/media-detail.module#MediaDetailPageModule'
-  },
-  {
-    path: 'posts',
-    loadChildren: './pages/posts/posts.module#PostsPageModule',
-    canActivate: [AuthGuardService],
   }
 ];
 

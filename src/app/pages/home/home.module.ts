@@ -7,7 +7,6 @@ import {AddPostModule} from 'src/app/components/add-post/add-post.module';
 import {PostModule} from 'src/app/components/post/post.module';
 import {SearchModule} from 'src/app/components/search/search.module';
 import {TabsModule} from 'src/app/components/tabs/tabs.module';
-import {PostService} from 'src/app/services/post.service';
 
 import {BachecaService} from './bacheca.service';
 import {HomePage} from './home.page';
@@ -19,7 +18,7 @@ import {HomePage} from './home.page';
     RouterModule.forChild([{path: '', component: HomePage}])
   ],
   declarations: [HomePage],
-  providers: [BachecaService, PostService]
+  providers: [BachecaService]
 })
 export class HomePageModule {
 }

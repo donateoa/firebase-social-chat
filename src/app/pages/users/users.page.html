@@ -18,17 +18,20 @@
         <ion-label padding>
           <h2>{{item.displayName}}</h2>
           <p>
-            <ion-buttons color="primary">
+            <ion-buttons>
               <ion-row>
                 <ion-col size="12" size-sm>
-                  <ion-button (click)="addToContact(item)">
-                    <ion-icon name="add"></ion-icon>
+                  <ion-button [routerLink]="['/profile', item.uid]" fill="outline" color="primary">
+                    Visualizza profilo
+                  </ion-button>
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-button (click)="addToContact(item)" fill="outline" color="primary">
                     Aggiungi agli amici
                   </ion-button>
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-button>
-                    <ion-icon name="mail"></ion-icon>
+                  <ion-button fill="outline" color="primary">
                     Invia Messaggio
                   </ion-button>
                 </ion-col>

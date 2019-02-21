@@ -60,9 +60,9 @@ export class RestService<T> implements RestInterface<T> {
     const url = this.getUrl();
     if (url) {
       const uri = `${url}/${id}`
-      console.log('Request for url:', uri);
+      console.log(`Recived request for : GET "${uri}"`);
       return from(db.doc(uri).get().then(t => {
-        console.log('Get result for url:', uri, t.data());
+        console.log(`Fetch finished loading: GET "${uri}"`);
         return this.mapToObj(t.data())
       }))
     } else {
@@ -123,7 +123,6 @@ export class RestService<T> implements RestInterface<T> {
         }
       }
       if (next) {
-        console.log('startAfter:', this.lastVisible);
         listRef = listRef.startAfter(this.lastVisible)
       }
 

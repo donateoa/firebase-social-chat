@@ -11,7 +11,6 @@ export class AppComponent {
   version = VERSION;
   public appPages = [
     {title: 'Home', url: '/home', icon: 'home'},
-    {title: 'Posts', url: '/posts', icon: 'clipboard'},
     {title: 'Contatti', url: '/contacts', icon: 'contacts'},
     {title: 'Persone', url: '/users', icon: 'search'},
     {title: 'Notifiche', url: '/notifications', icon: 'notifications'},

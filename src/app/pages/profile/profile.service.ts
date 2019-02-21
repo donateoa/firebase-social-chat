@@ -1,18 +1,10 @@
 
 
 import {Injectable} from '@angular/core';
-import {of } from 'rxjs';
+import {Profile} from 'src/app/model/profile.model';
 import {RestService} from 'src/app/services/rest.service';
 
-import {IUser} from '../users/user.model';
-
 @Injectable({providedIn: 'root'})
-export class ProfileService extends RestService<IUser> {
-  getUrl() {
-    if (this.getAuthUser()) {
-      return this.getAuthUser().getContacts();
-    } else {
-      return null;
-    }
-  }
+export class ProfileService extends RestService<Profile> {
+  getUrl() { return 'profile' }
 }
