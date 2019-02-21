@@ -13,27 +13,29 @@
       Richieste di contatto
     </ion-list-header>
     <ng-container *ngIf="list as list else loading">
-      <ion-item *ngFor="let item of list">
-        <ion-avatar>
-          <img src="/assets/images/profile/user.svg" *ngIf="!item.photoURL">
-          <img [src]="item.photoURL" *ngIf="item.photoURL">
-        </ion-avatar>
-        <ion-label padding>
-          <h3>{{item.displayName}}</h3>
-          <p>Ti ha inviato una richiesta di contatto</p>
-          <p>
-            <ion-buttons color="primary">
-              <ion-button (click)="addToContact(item.email)" color="primary">
-                Accetta
-              </ion-button>
-              <ion-button>
-                Rifiuta
-              </ion-button>
-            </ion-buttons>
-          </p>
-        </ion-label>
-      </ion-item>
-
+      <ng-container *ngIf="!list.length">Nessuna richiesta.</ng-container>
+      <ng-container *ngIf="list.length">
+        <ion-item *ngFor="let item of list">
+          <ion-avatar>
+            <img src="/assets/images/profile/user.svg" *ngIf="!item.photoURL">
+            <img [src]="item.photoURL" *ngIf="item.photoURL">
+          </ion-avatar>
+          <ion-label padding>
+            <h3>{{item.displayName}}</h3>
+            <p>Ti ha inviato una richiesta di contatto</p>
+            <p>
+              <ion-buttons color="primary">
+                <ion-button (click)="addToContact(item.email)" color="primary">
+                  Accetta
+                </ion-button>
+                <ion-button>
+                  Rifiuta
+                </ion-button>
+              </ion-buttons>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ng-container>
     </ng-container>
     <ng-template #loading>
       <ion-item text-center lines="none">
