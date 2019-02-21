@@ -13,7 +13,6 @@ export class AppComponent {
     {title: 'Home', url: '/home', icon: 'home'},
     {title: 'Contatti', url: '/contacts', icon: 'contacts'},
     {title: 'Persone', url: '/users', icon: 'search'},
-    {title: 'Notifiche', url: '/notifications', icon: 'notifications'},
     {title: 'Messaggi', url: '/chats', icon: 'chatboxes'}
   ];
   constructor(
