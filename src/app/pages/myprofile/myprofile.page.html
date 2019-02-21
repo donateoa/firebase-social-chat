@@ -5,6 +5,9 @@
     </ion-buttons>
     <ion-title>Profilo</ion-title>
   </ion-toolbar>
+  <ion-toolbar>
+    <app-tabs></app-tabs>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
@@ -14,7 +17,13 @@
       <img [src]="user.photoURL" *ngIf="user.photoURL">
     </ion-thumbnail>
     <h2>{{user.displayName}}</h2>
-    <p>{{profile.text}}</p>
+    <ion-item>
+      <ion-label position="floating">Aggiungi qualcosa di te</ion-label>
+      <ion-input type="textarea" (keyup)="changed=true" [(ngModel)]="profile.text"></ion-input>
+    </ion-item>
+    <ion-button (click)="save()" [disabled]="!changed" color="primary" size="small" fill="outline">
+      Salva
+    </ion-button>
   </div>
   <ng-container *ngIf="(listeningOnchange$ | async) as list ">
     <ng-container *ngFor="let item of list">

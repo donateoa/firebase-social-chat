@@ -31,7 +31,8 @@ export class UsersService implements RestInterface<User> {
   update(data: User): Observable<User> { return null; }
 
   findByEmail(email: string): Observable<IUser> {
-    const firebaseFunction = firebase.functions().httpsCallable('getUser');
+    const firebaseFunction =
+        firebase.functions().httpsCallable('getUserByEmail');
     const data = {email: email};
     return from(
         firebaseFunction(data).then(response => mapToUser(response.data)));

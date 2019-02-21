@@ -36,7 +36,7 @@ export class ResolveMyProfile implements Resolve<Profile> {
       private profileService: ProfileService, private principal: Principal) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.profileService.find(this.principal.identity().email);
+    return this.profileService.find(this.principal.identity().uid);
   }
 }
 @Injectable({providedIn: 'root'})
@@ -70,10 +70,10 @@ const routes: Routes = [
     loadChildren: './pages/users/users.module#UsersPageModule'
   },
   {
-    path: 'profile',
+    path: 'myprofile',
+    loadChildren: './pages/myprofile/myprofile.module#MyprofilePageModule',
     canActivate: [AuthGuardService],
-    loadChildren: './pages/profile/profile.module#ProfilePageModule',
-    resolve: {profile: ResolveMyProfile, user: ResolveMe},
+    resolve: {profile: ResolveMyProfile, user: ResolveMe}
   },
   {
     path: 'profile/:uid',

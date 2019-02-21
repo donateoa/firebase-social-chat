@@ -31,12 +31,12 @@ export class RestService<T> implements RestInterface<T> {
     const db = firebase.firestore();
     const url = this.getUrl();
     if (url) {
+      console.log('Request for creare:', url, data);
       var refDoc = db.collection(url).doc();
       const now = firebase.firestore.FieldValue.serverTimestamp();
       // add the follow property
       data['creationDate'] = now;
       data['uid'] = refDoc.id;
-      console.log('Request for creare:', data);
       return from(refDoc.set(data).then(() => data));
     } else {
       return null;
@@ -47,8 +47,8 @@ export class RestService<T> implements RestInterface<T> {
     const db = firebase.firestore();
     const url = this.getUrl();
     if (url) {
-      var refDoc = db.collection(url).doc(data['uui']);
-      console.log('Request for update:', data);
+      console.log('Request for update:', url, data);
+      var refDoc = db.collection(url).doc(data['uid']);
       return from(refDoc.set(data).then(() => data));
     } else {
       return null;

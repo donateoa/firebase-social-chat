@@ -39,15 +39,15 @@ export class ProfilePage {
 
 
   constructor(
-      private userPostsService: UserPostsService,
-      private profileService: ProfileService,
-      private activatedRoute: ActivatedRoute) {}
+      public userPostsService: UserPostsService,
+      public profileService: ProfileService,
+      public activatedRoute: ActivatedRoute) {}
 
   pageWillEnter() {
     this.activatedRoute.data.subscribe((data) => {
       this.user = data.user;
       this.profile = data.profile;
-      console.log('entr', this.user);
+      console.log('data received', data);
       this.userPostsService.setUrl(this.user.getUserPosts());
       const makeOf = (t) => of (t);
 

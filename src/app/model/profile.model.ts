@@ -1,9 +1,10 @@
 
 export interface IProfile {
-  text?: string;
+  uid?: string, text?: string;
   creationDate?: any;
 }
 
 export class Profile implements IProfile {
-  constructor(public text?: string, public creationDate?: any) {}
+  constructor(
+      public uid?: string, public text?: string, public creationDate?: any) {}
 }
