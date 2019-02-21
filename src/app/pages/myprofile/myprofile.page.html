@@ -25,6 +25,7 @@
       Salva
     </ion-button>
   </div>
+  <app-add-post></app-add-post>
   <ng-container *ngIf="(listeningOnchange$ | async) as list ">
     <ng-container *ngFor="let item of list">
       <app-post [postId]="item.id"></app-post>

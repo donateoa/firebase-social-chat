@@ -57,6 +57,7 @@ export class AddPostComponent implements OnInit {
           this.apiService.addPost(post).then(() => {
             that.dismissLoading();
             this.validations_form.reset();
+            this.fileAsDataURL = null;
             that.output.emit(true);
           })
         })
