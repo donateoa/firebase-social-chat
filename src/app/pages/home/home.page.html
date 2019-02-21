@@ -13,9 +13,14 @@
 
 <ion-content padding>
   <app-add-post></app-add-post>
-  <ng-container *ngIf="list as list else loading">
+  <ng-container *ngIf="(listeningOnchange$ | async) as list ">
     <ng-container *ngFor="let item of list">
-      <app-post [postId]="item"></app-post>
+      <app-post [postId]="item.id"></app-post>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="(list$ | async) as list else loading">
+    <ng-container *ngFor="let item of list">
+      <app-post [postId]="item.id"></app-post>
     </ng-container>
   </ng-container>
   <ng-template #loading>
@@ -24,7 +29,7 @@
     </ion-item>
   </ng-template>
 
-  <ion-infinite-scroll [disabled]="disabledInfiniteScroll" (ionInfinite)="loadData($event)" position="bottom">
+  <ion-infinite-scroll (ionInfinite)="emitScroll($event)" position="bottom">
     <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>

@@ -2,7 +2,7 @@ import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@a
 import {IonButton} from '@ionic/angular';
 import {delay} from 'q';
 import {Observable, Subject, combineLatest, fromEvent, interval, of } from 'rxjs';
-import {concatMap, flatMap, map, mergeMap, scan, startWith} from 'rxjs/operators';
+import {concatMap, flatMap, map, mergeMap, scan, startWith, tap} from 'rxjs/operators';
 import {PostComment} from 'src/app/model/post-comment.model';
 import {Post} from 'src/app/model/post.model';
 import {Principal} from 'src/app/services/Principal';
@@ -23,12 +23,13 @@ export class PostComponent implements OnInit {
   comments: PostComment[];
   // handle toogle button show/hide more detail
   clicks = new Subject<Event>();
+  showToogleButton$: Observable<Boolean>;
   toggleState = currentState => !currentState;
   buttonInitialState = false;
 
-  clicks$ = this.clicks.asObservable()
-                .pipe(scan(this.toggleState, this.buttonInitialState))
-                .pipe(startWith(this.buttonInitialState));
+  clicks$ = this.clicks.asObservable().pipe(
+      scan(this.toggleState, this.buttonInitialState),
+      startWith(this.buttonInitialState));
 
   // define a stream with combineLatest to show more or less comments
   list$: Observable<PostComment[]>;
@@ -53,13 +54,12 @@ export class PostComponent implements OnInit {
                 mergeMap(t => makeOf(t)),
                 scan<PostComment>((all, cur) => [...all, cur], []),
                 map(t => t.sort((a, b) => a.creationDate - b.creationDate)));
+    this.showToogleButton$ = this.incomingData$.pipe(map(t => t.length > 3));
 
     this.list$ = combineLatest(this.incomingData$, this.clicks$)
                      .pipe(map(
                          ([comments, toggleState]) =>
                              (toggleState ? comments : comments.slice(-3))));
-
-    this.list$.subscribe((a) => console.log('list:', a));
   }
 
   toggleCommentClick(event: Event) { this.clicks.next(event); }

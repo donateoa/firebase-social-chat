@@ -7,4 +7,4 @@ import {environment} from './environments/environment';
 // webpack to update the application
 
 export const VERSION = environment.VERSION;
-export const PAGE_SIZE = 20;
+export const PAGE_SIZE = 10;

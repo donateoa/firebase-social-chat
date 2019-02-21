@@ -5,7 +5,7 @@ import {Injectable} from '@angular/core';
 import {Query} from '@angular/fire/firestore';
 import * as firebase from 'firebase/app';
 import {Observable, Subject, from, of } from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 import {PAGE_SIZE} from 'src/app.constants';
 import {IFilter} from 'src/app/components/entity-filter/entity-filter.model';
 import {RestInterface} from 'src/app/services/rest.interface';
@@ -17,7 +17,7 @@ import {mapToUser} from '../pages/users/users.service';
 @Injectable()
 export class RestService<T> implements RestInterface<T> {
   lastVisible: T;
-
+  firstVisible: T;
   constructor() {}
   getAuthUser = (): User => mapToUser(firebase.auth().currentUser)
   getUrl(): string {
@@ -72,11 +72,9 @@ export class RestService<T> implements RestInterface<T> {
 
   delete (id: number|string): Observable<T> { return null; }
   // listen for realtime update
-  onSnapshot(next?: boolean, filter?: IFilter): Observable<T[]> {
+  onSnapshot(next?: boolean, filter?: IFilter): Observable<T> {
     const db = firebase.firestore();
-    const that = this;
     const url = this.getUrl();
-    console.log('Listen  onSnapshotfor url:', url);
     if (!url) {
       return of (null);
     } else {
@@ -90,19 +88,22 @@ export class RestService<T> implements RestInterface<T> {
         }
       }
       if (next) {
-        listRef = listRef.startAfter(this.lastVisible)
+        listRef = listRef.endBefore(this.firstVisible)
       }
-      const subject: Subject<T[]> = new Subject();
-      listRef.limit(PAGE_SIZE).onSnapshot(function(querySnapshot) {
-        const list: T[] = [];
-        querySnapshot.forEach(function(doc) {
-          list.push(that.mapToObj(doc.data()));
+      return Observable.create(subscriber => {
+        listRef.limit(PAGE_SIZE).onSnapshot((querySnapshot) => {
+          querySnapshot.docChanges().forEach(change => {
+            const O = this.mapToObj(change.doc.data());
+            if (change.type === 'added') {
+              subscriber.next(O);
+            }
+            this.lastVisible = O;
+          });
         });
-        subject.next(list);
       });
-      return subject.asObservable();
     }
   }
+
   // get once
   query(next?: boolean, filter?: IFilter): Observable<T[]> {
     const db = firebase.firestore();
@@ -122,16 +123,24 @@ export class RestService<T> implements RestInterface<T> {
         }
       }
       if (next) {
+        console.log('startAfter:', this.lastVisible);
         listRef = listRef.startAfter(this.lastVisible)
       }
-      return from(listRef.limit(PAGE_SIZE).get().then(
-                      (t) => this.setLastVisible(t)))
-          .pipe(map(d => d.docs.map(t => this.mapToObj(t.data()))));
+
+      return from(listRef.limit(PAGE_SIZE).get())
+          .pipe(
+              tap((t) => this.setLastVisible(t)),
+              tap((t) => this.setFirstVisible(t)),
+              map(d => d.docs.map(t => this.mapToObj(t.data()))));
     }
   }
   setLastVisible(documentSnapshots) {
     this.lastVisible =
         documentSnapshots.docs[documentSnapshots.docs.length - 1];
+    return documentSnapshots;
+  }
+  setFirstVisible(documentSnapshots) {
+    this.firstVisible = documentSnapshots.docs[0];
     return documentSnapshots;
   }
 }

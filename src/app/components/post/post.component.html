@@ -20,7 +20,7 @@
       <p>
         {{item.text}}
       </p>
-      <ion-list lines="none">
+      <ion-list lines="none" class="dense">
         <ion-item *ngFor="let comment of list$ | async">
           <ion-avatar>
             <img src="/assets/images/profile/user.svg" *ngIf="!item.photoURL">
@@ -32,9 +32,9 @@
             <p text-rigth> <small>{{item.creationDate.seconds * 1000 | date:'d MMM, h:mm a'  }}</small> </p>
           </ion-label>
         </ion-item>
-        <ion-item>
+        <ion-item *ngIf="showToogleButton$ | async">
           <ion-buttons slot="end">
-            <ion-button (click)="toggleCommentClick()">
+            <ion-button (click)="toggleCommentClick()" size="small">
               <ion-label *ngIf="!(clicks$ | async)">Mostra Tutti</ion-label>
               <ion-label *ngIf="(clicks$ | async)">Mostra Meno</ion-label>
               <!-- <ion-label *ngIf="!(clicks | async)?">Nascondi</ion-label> -->
