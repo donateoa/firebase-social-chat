@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {IonContent} from '@ionic/angular';
 import {Observable, Subject, merge, of } from 'rxjs';
@@ -8,6 +8,7 @@ import {Post} from 'src/app/model/post.model';
 import {Profile} from 'src/app/model/profile.model';
 import {UserPostsService} from 'src/app/services/user-post.service';
 
+import {ContactsService} from '../contacts/contacts.service';
 import {User} from '../users/user.model';
 
 import {ProfileService} from './profile.service';
@@ -17,10 +18,11 @@ import {ProfileService} from './profile.service';
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
 })
-export class ProfilePage {
+export class ProfilePage implements OnInit {
   user: User;
   profile: Profile;
-
+  contactsMap;
+  isFriend = false;
   @ViewChild(IonContent) content: IonContent;
   disabledInfiniteScroll = true;
   account: Account;
@@ -39,14 +41,23 @@ export class ProfilePage {
 
 
   constructor(
+      private contactsService: ContactsService,
       public userPostsService: UserPostsService,
       public profileService: ProfileService,
       public activatedRoute: ActivatedRoute) {}
-
+  ngOnInit(): void {
+    this.contactsService.query(false, {pageSize: 20000}).subscribe(data => {
+      this.contactsMap = data.reduce(function(map, obj) {
+        map[obj.email] = obj;
+        return map;
+      }, {});
+    });
+  }
   pageWillEnter() {
     this.activatedRoute.data.subscribe((data) => {
       this.user = data.user;
       this.profile = data.profile;
+      this.isFriend = this.contactsMap[data.user.email] ? true : false;
       console.log('data received', data);
       this.userPostsService.setUrl(this.user.getUserPosts());
       const makeOf = (t) => of (t);

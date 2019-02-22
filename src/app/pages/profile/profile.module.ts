@@ -6,6 +6,8 @@ import {IonicModule} from '@ionic/angular';
 import {PostModule} from 'src/app/components/post/post.module';
 import {UserPostsService} from 'src/app/services/user-post.service';
 
+import {ContactsService} from '../contacts/contacts.service';
+
 import {ProfilePage} from './profile.page';
 import {ProfileService} from './profile.service';
 
@@ -17,7 +19,7 @@ const routes: Routes = [{path: '', component: ProfilePage}];
     PostModule
   ],
   declarations: [ProfilePage],
-  providers: [ProfileService, UserPostsService]
+  providers: [ProfileService, UserPostsService, ContactsService]
 })
 export class ProfilePageModule {
 }

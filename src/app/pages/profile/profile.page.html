@@ -15,6 +15,19 @@
     </ion-thumbnail>
     <h2>{{user.displayName}}</h2>
     <p>{{profile.text}}</p>
+    <p>
+      <ion-buttons>
+        <ion-button (click)="addToContact(user)" class="responsive-button" *ngIf="!isFriend">
+          <ion-icon name="add"></ion-icon>
+          <ion-label>Aggiungi agli amici</ion-label>
+        </ion-button>
+        <ion-button class="responsive-button" *ngIf="isFriend" [routerLink]="['/chats', user.uid]">
+          <ion-icon name="chatboxes"></ion-icon>
+          <ion-label>Invia Messaggio</ion-label>
+        </ion-button>
+      </ion-buttons>
+
+    </p>
   </div>
   <ng-container *ngIf="(listeningOnchange$ | async) as list ">
     <ng-container *ngFor="let item of list">

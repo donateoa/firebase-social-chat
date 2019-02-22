@@ -21,6 +21,7 @@ import {UsersService, mapToUser} from './users.service';
 export class UsersPage implements OnInit {
   @ViewChild(IonContent) content: IonContent;
   list: User[];
+  contactsMap;
   disabledInfiniteScroll = true;
   account: Account;
   // set default sort
@@ -38,8 +39,12 @@ export class UsersPage implements OnInit {
       private contactsService: ContactsService) {}
 
   ngOnInit() {
-    this.contactsService.query(false, {pageSize: 20000})
-        .subscribe(data => console.log('contacts', data));
+    this.contactsService.query(false, {pageSize: 20000}).subscribe(data => {
+      this.contactsMap = data.reduce(function(map, obj) {
+        map[obj.email] = obj;
+        return map;
+      }, {});
+    });
   }
   changeFilter(criteria) {
     if (criteria.filter) {
@@ -65,6 +70,9 @@ export class UsersPage implements OnInit {
         if (!append) {
           this.list = [];
         }
+        data.map(
+            t => Object.assign(
+                t, {friend: this.contactsMap[t.email] ? true : false}));
         this.list = [...this.list, ...data];
         this.disabledInfiniteScroll = false;
       }

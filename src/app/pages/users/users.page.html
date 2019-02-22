@@ -26,11 +26,11 @@
                 <ion-icon name="bookmark"></ion-icon>
                 <ion-label>Visualizza profilo</ion-label>
               </ion-button>
-              <ion-button (click)="addToContact(item)" class="responsive-button">
+              <ion-button (click)="addToContact(item)" class="responsive-button" *ngIf="!item.friend">
                 <ion-icon name="add"></ion-icon>
                 <ion-label>Aggiungi agli amici</ion-label>
               </ion-button>
-              <ion-button class="responsive-button">
+              <ion-button class="responsive-button" *ngIf="item.friend" [routerLink]="['/chats', item.uid]">
                 <ion-icon name="chatboxes"></ion-icon>
                 <ion-label>Invia Messaggio</ion-label>
               </ion-button>
