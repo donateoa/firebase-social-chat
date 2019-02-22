@@ -21,8 +21,8 @@ export const enum SortType {
 
 export class Filter implements IFilter {
   constructor(
-      field?: string, operator?: OperatorType, value?: any, sort?: SortType,
-      public pageSize?: number) {
+      public field?: string, public operator?: OperatorType, public value?: any,
+      public sort?: SortType, public pageSize?: number) {
     if (!pageSize) {
       this.pageSize = PAGE_SIZE;
     }

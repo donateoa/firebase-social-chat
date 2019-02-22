@@ -7,7 +7,7 @@ import * as firebase from 'firebase/app';
 import {Observable, from, of } from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {PAGE_SIZE} from 'src/app.constants';
-import {IFilter} from 'src/app/components/entity-filter/entity-filter.model';
+import {Filter, IFilter} from 'src/app/components/entity-filter/entity-filter.model';
 import {RestInterface} from 'src/app/services/rest.interface';
 
 import {User} from '../pages/users/user.model';
@@ -106,9 +106,10 @@ export class RestService<T> implements RestInterface<T> {
   }
 
   // get once
-  query(next?: boolean, filter?: IFilter): Observable<T[]> {
+  query(next?: boolean, Pfilter?: IFilter): Observable<T[]> {
     const db = firebase.firestore();
     const url = this.getUrl();
+    const filter = Pfilter || new Filter();
     const pageSize = filter.pageSize ? filter.pageSize : PAGE_SIZE;
     console.log('Request for url:', url);
     if (!url) {
