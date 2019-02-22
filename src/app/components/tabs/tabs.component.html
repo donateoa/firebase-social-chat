@@ -5,7 +5,7 @@
       <ion-icon name="calendar"></ion-icon>
     </ion-tab-button>
 
-    <ion-tab-button color="secondary" routerLink="/notifications" routerLinkActive="active-link">
+    <ion-tab-button routerLink="/notifications" routerLinkActive="active-link">
       <ion-icon name="contacts"></ion-icon>
       <ion-badge color="danger" *ngIf="(notifications$ | async)?.contactNotifications as n" item-end>{{n}}</ion-badge>
     </ion-tab-button>

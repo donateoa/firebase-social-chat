@@ -51,13 +51,16 @@
       </ion-col>
       <ion-col size="auto">
         <ion-buttons>
-          <ion-button [routerLink]="['/upload', user.uid]" shape="round" fill="clear">
-            <ion-icon slot="icon-only" name="attach"></ion-icon>
-          </ion-button>
-          <ion-button (click)="sendMessage()" shape="round" color="secondary" fill="clear">
+
+          <ion-button (click)="sendMessage()">
             <ion-icon slot="icon-only" name="md-send"></ion-icon>
           </ion-button>
-          <ion-button slot="icon-only" (click)="openEmoji()" class="emoji-picker-button">😀</ion-button>
+          <ion-button (click)="openEmoji()">
+            <ion-icon slot="icon-only" name="happy"></ion-icon>
+          </ion-button>
+          <ion-button [routerLink]="['/upload', user.uid]">
+            <ion-icon slot="icon-only" name="attach"></ion-icon>
+          </ion-button>
         </ion-buttons>
       </ion-col>
     </ion-row>

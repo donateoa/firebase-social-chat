@@ -39,7 +39,7 @@ export class UsersPage implements OnInit {
       private contactsService: ContactsService) {}
 
   ngOnInit() {
-    this.contactsService.query(false, {pageSize: 20000}).subscribe(data => {
+    this.contactsService.query(false, {pageSize: 10000}).subscribe(data => {
       this.contactsMap = data.reduce(function(map, obj) {
         map[obj.email] = obj;
         return map;
