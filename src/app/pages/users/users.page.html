@@ -5,6 +5,9 @@
     </ion-buttons>
     <ion-title>Utenti</ion-title>
   </ion-toolbar>
+  <ion-toolbar>
+    <app-tabs></app-tabs>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
@@ -19,23 +22,18 @@
           <h2>{{item.displayName}}</h2>
           <p>
             <ion-buttons>
-              <ion-row>
-                <ion-col size="12" size-sm>
-                  <ion-button [routerLink]="['/profile', item.uid]" fill="outline" color="primary">
-                    Visualizza profilo
-                  </ion-button>
-                </ion-col>
-                <ion-col size="12" size-sm>
-                  <ion-button (click)="addToContact(item)" fill="outline" color="primary">
-                    Aggiungi agli amici
-                  </ion-button>
-                </ion-col>
-                <ion-col size="12" size-sm>
-                  <ion-button fill="outline" color="primary">
-                    Invia Messaggio
-                  </ion-button>
-                </ion-col>
-              </ion-row>
+              <ion-button [routerLink]="['/profile', item.uid]" color="primary" class="responsive-button">
+                <ion-icon name="bookmark"></ion-icon>
+                <ion-label>Visualizza profilo</ion-label>
+              </ion-button>
+              <ion-button (click)="addToContact(item)" class="responsive-button">
+                <ion-icon name="add"></ion-icon>
+                <ion-label>Aggiungi agli amici</ion-label>
+              </ion-button>
+              <ion-button class="responsive-button">
+                <ion-icon name="chatboxes"></ion-icon>
+                <ion-label>Invia Messaggio</ion-label>
+              </ion-button>
             </ion-buttons>
 
           </p>
