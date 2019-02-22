@@ -7,6 +7,7 @@ import {IonContent, LoadingController, ModalController} from '@ionic/angular';
 import * as firebase from 'firebase/app';
 import {Observable, of } from 'rxjs';
 import {PAGE_SIZE} from 'src/app.constants';
+import {EmojiPickerComponent} from 'src/app/components/emoji-picker/emoji-picker.component';
 import {SortType} from 'src/app/components/entity-filter/entity-filter.model';
 import {Principal} from 'src/app/services/Principal';
 import {ToastService} from 'src/app/services/toast.service';
@@ -153,5 +154,15 @@ export class ChatPage implements OnDestroy {
       this.sendMessage();
     }
     event.preventDefault();
+  }
+  async openEmoji() {
+    const modal =
+        await this.modalController.create({component: EmojiPickerComponent});
+    await modal.present();
+    const {data} = await modal.onDidDismiss();
+    console.log(data);
+    if (data.output) {
+      this.message = (this.message ? this.message : '') + data.output;
+    }
   }
 }
