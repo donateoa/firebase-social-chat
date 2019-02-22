@@ -1,10 +1,10 @@
-import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {IonButton} from '@ionic/angular';
-import {delay} from 'q';
-import {Observable, Subject, combineLatest, fromEvent, interval, of } from 'rxjs';
-import {concatMap, flatMap, map, mergeMap, scan, startWith, tap} from 'rxjs/operators';
+import {Component, Input, OnInit,} from '@angular/core';
+import {ModalController} from '@ionic/angular';
+import {Observable, Subject, combineLatest, of } from 'rxjs';
+import {map, mergeMap, scan, startWith} from 'rxjs/operators';
 import {PostComment} from 'src/app/model/post-comment.model';
 import {Post} from 'src/app/model/post.model';
+import {MediaDetailPage} from 'src/app/pages/media-detail/media-detail.page';
 import {Principal} from 'src/app/services/Principal';
 import {PostService} from 'src/app/services/post.service';
 
@@ -40,7 +40,7 @@ export class PostComponent implements OnInit {
   get postId(){return this._postId};
 
   constructor(
-      private postService: PostService,
+      public modalController: ModalController, private postService: PostService,
       private postCommentsService: PostCommentsService,
       private principal: Principal) {}
   ngOnInit(): void {
@@ -74,5 +74,10 @@ export class PostComponent implements OnInit {
       this.addComment();
     }
     event.preventDefault();
+  }
+  async navigateToMedia(media: string) {
+    const modal = await this.modalController.create(
+        {component: MediaDetailPage, componentProps: {'media': media}});
+    return await modal.present();
   }
 }

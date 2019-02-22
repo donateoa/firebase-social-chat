@@ -28,7 +28,7 @@
     <div *ngFor="let message of messages" class="messages" [class.other]="message.uid !== user.uid"
       [class.mine]="message.uid === user.uid">
       <div class="message">
-        <a (click)="navigateToDetail(message.media)" class="media" *ngIf="message.media && !(message.$media | async)">
+        <a (click)="navigateToMedia(message.media)" class="media" *ngIf="message.media && !(message.$media | async)">
           <ion-thumbnail>
             <img [src]="message.media" />
           </ion-thumbnail>

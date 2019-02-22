@@ -20,6 +20,7 @@ import {environment} from 'src/environments/environment.prod';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
+import {MediaDetailPageModule} from './pages/media-detail/media-detail.module';
 import {ServicesModule} from './services/services.module';
 
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
@@ -50,7 +51,7 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
   entryComponents: [],
   imports: [
     FacebookModule, ServicesModule, BrowserModule, IonicModule.forRoot(),
-    AppRoutingModule,
+    AppRoutingModule, MediaDetailPageModule,
     AngularFireModule.initializeApp(environment.firebase_config),
     AngularFireAuthModule, FirebaseUIModule.forRoot(firebaseUiAuthConfig)
   ],

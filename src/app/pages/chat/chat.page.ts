@@ -3,7 +3,7 @@ import 'firebase/functions';
 
 import {Component, OnDestroy, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {IonContent, LoadingController} from '@ionic/angular';
+import {IonContent, LoadingController, ModalController} from '@ionic/angular';
 import * as firebase from 'firebase/app';
 import {Observable, of } from 'rxjs';
 import {PAGE_SIZE} from 'src/app.constants';
@@ -11,6 +11,7 @@ import {SortType} from 'src/app/components/entity-filter/entity-filter.model';
 import {Principal} from 'src/app/services/Principal';
 import {ToastService} from 'src/app/services/toast.service';
 
+import {MediaDetailPage} from '../media-detail/media-detail.page';
 import {IUser, User} from '../users/user.model';
 
 import {IMessage} from './message.model';
@@ -35,6 +36,7 @@ export class ChatPage implements OnDestroy {
   loading: any;
 
   constructor(
+      public modalController: ModalController,
       private toastService: ToastService,
       private loadingController: LoadingController, private router: Router,
       private activatedRoute: ActivatedRoute, private principal: Principal) {}
@@ -93,8 +95,10 @@ export class ChatPage implements OnDestroy {
       });
     });
   }
-  navigateToDetail(media: string) {
-    this.router.navigate(['media-detail'], {queryParams: {'media': media}})
+  async navigateToMedia(media: string) {
+    const modal = await this.modalController.create(
+        {component: MediaDetailPage, componentProps: {'media': media}});
+    return await modal.present();
   }
 
   ngOnDestroy() { this.unsubscribe(); }

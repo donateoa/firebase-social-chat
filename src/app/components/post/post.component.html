@@ -13,7 +13,7 @@
       </ion-item>
     </ion-card-title>
     <ion-card-content>
-      <ion-thumbnail *ngIf="item.media">
+      <ion-thumbnail *ngIf="item.media" (click)="navigateToMedia(item.media)">
         <img [src]="item.media">
       </ion-thumbnail>
       <h2> {{item.title}}</h2>

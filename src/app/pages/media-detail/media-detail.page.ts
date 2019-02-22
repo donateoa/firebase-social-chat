@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AngularFireStorage} from '@angular/fire/storage';
 import {ActivatedRoute} from '@angular/router';
-import {LoadingController} from '@ionic/angular';
+import {LoadingController, ModalController, NavParams} from '@ionic/angular';
 import {Observable} from 'rxjs';
 
 @Component({
@@ -14,14 +14,19 @@ export class MediaDetailPage implements OnInit {
   url: Observable<any>;
   media: any;
   constructor(
+      private modalController: ModalController, private navParams: NavParams,
       public loadingController: LoadingController,
       private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe(params => {
-      console.log(params);  // {media: "media"}
-      this.media = params['media'] ? params['media'] : null;
-    });
+    if (this.navParams.data.media) {
+      this.media = this.navParams.data.media;
+    } else {
+      this.activatedRoute.queryParams.subscribe(params => {
+        console.log(params);  // {media: "media"}
+        this.media = params['media'] ? params['media'] : null;
+      });
+    }
   }
 
   downloadFile() {
@@ -38,4 +43,5 @@ export class MediaDetailPage implements OnInit {
     xhr.open('GET', this.media);
     xhr.send();
   }
+  dismiss() { this.modalController.dismiss(); }
 }
