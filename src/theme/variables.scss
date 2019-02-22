@@ -101,6 +101,12 @@ ion-list{
   }
 }  
 }
+ion-toolbar{
+  ion-item{
+    --background: var(--ion-color-medium);
+    --color: var(--ion-color-medium-contrast)
+  }
+}
 
 .active-link{
   // color:var(--ion-color-tertiary);
