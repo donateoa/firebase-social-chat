@@ -4,8 +4,9 @@ import 'firebase/firestore';
 import {Injectable} from '@angular/core';
 import {Query} from '@angular/fire/firestore';
 import * as firebase from 'firebase/app';
-import {Observable, Subject, from, of } from 'rxjs';
+import {Observable, from, of } from 'rxjs';
 import {map, tap} from 'rxjs/operators';
+import {PAGE_SIZE} from 'src/app.constants';
 import {IFilter} from 'src/app/components/entity-filter/entity-filter.model';
 import {RestInterface} from 'src/app/services/rest.interface';
 
@@ -74,6 +75,7 @@ export class RestService<T> implements RestInterface<T> {
   onSnapshot(next?: boolean, filter?: IFilter): Observable<T> {
     const db = firebase.firestore();
     const url = this.getUrl();
+    const pageSize = filter.pageSize ? filter.pageSize : PAGE_SIZE;
     if (!url) {
       return of (null);
     } else {
@@ -90,7 +92,7 @@ export class RestService<T> implements RestInterface<T> {
         listRef = listRef.endBefore(this.firstVisible)
       }
       return Observable.create(subscriber => {
-        listRef.limit(filter.pageSize).onSnapshot((querySnapshot) => {
+        listRef.limit(pageSize).onSnapshot((querySnapshot) => {
           querySnapshot.docChanges().forEach(change => {
             const O = this.mapToObj(change.doc.data());
             if (change.type === 'added') {
@@ -107,7 +109,7 @@ export class RestService<T> implements RestInterface<T> {
   query(next?: boolean, filter?: IFilter): Observable<T[]> {
     const db = firebase.firestore();
     const url = this.getUrl();
-
+    const pageSize = filter.pageSize ? filter.pageSize : PAGE_SIZE;
     console.log('Request for url:', url);
     if (!url) {
       return of (null);
@@ -125,7 +127,7 @@ export class RestService<T> implements RestInterface<T> {
         listRef = listRef.startAfter(this.lastVisible)
       }
 
-      return from(listRef.limit(filter.pageSize).get())
+      return from(listRef.limit(pageSize).get())
           .pipe(
               tap((t) => this.setLastVisible(t)),
               tap((t) => this.setFirstVisible(t)),
