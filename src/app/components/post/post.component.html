@@ -27,8 +27,10 @@
             <img [src]="comment.photoURL" *ngIf="comment.photoURL">
           </ion-avatar>
           <ion-label>
-            <h2>{{comment.displayName}} </h2>
-            <h3>{{comment.text}}</h3>
+            <h3>
+              <a [routerLink]="['/profile', comment.uid]">{{comment.displayName}}</a>
+              {{comment.text}}
+            </h3>
             <p text-rigth> <small>{{item.creationDate.seconds * 1000 | date:'d MMM, h:mm a'  }}</small> </p>
           </ion-label>
         </ion-item>
