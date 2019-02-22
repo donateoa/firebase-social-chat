@@ -1,10 +1,11 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
-import {LoadingController} from '@ionic/angular';
+import {LoadingController, ModalController} from '@ionic/angular';
 import {IPost} from 'src/app/model/post.model';
 import {ApiService} from 'src/app/services/api.service';
 import {StorageService} from 'src/app/services/storage.service';
 import {ToastService} from 'src/app/services/toast.service';
+import {EmojiPickerComponent} from '../emoji-picker/emoji-picker.component';
 
 export const atLeastOne = (validator: ValidatorFn) =>
     (group: FormGroup, ): ValidationErrors | null => {
@@ -30,8 +31,9 @@ export class AddPostComponent implements OnInit {
   loading: any;
   validations_form: FormGroup;
 
+
   constructor(
-      public formBuilder: FormBuilder,
+      public modalController: ModalController, public formBuilder: FormBuilder,
       private loadingController: LoadingController,
       private toastService: ToastService,
       private storageService: StorageService, private apiService: ApiService) {}
@@ -93,5 +95,16 @@ export class AddPostComponent implements OnInit {
       this.sendPost();
     }
     event.preventDefault();
+  }
+  async openEmoji() {
+    const modal =
+        await this.modalController.create({component: EmojiPickerComponent});
+    await modal.present();
+    const {data} = await modal.onDidDismiss();
+    console.log(data);
+    if (data.output) {
+      this.validations_form.get('text').setValue(
+          this.validations_form.get('text').value + data.output);
+    }
   }
 }

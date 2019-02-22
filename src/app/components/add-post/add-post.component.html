@@ -5,14 +5,17 @@
     </ion-thumbnail>
   </div>
   <ion-item>
-    <ion-label position="stacked">Aggiungi un post</ion-label>
+    <ion-label position="floating">Aggiungi un post</ion-label>
     <ion-input type="textarea" (keyup)="onKey($event)" formControlName="text"></ion-input>
+  </ion-item>
+  <ion-item lines="none">
     <ion-buttons slot="end">
       <ion-button (click)="sendPost()" [disabled]="validations_form.invalid" color="primary" size="small"
         class="responsive-button">
         <ion-icon name="send"></ion-icon>
         <ion-label>Pubblica</ion-label>
       </ion-button>
+      <ion-button (click)="openEmoji()">😀</ion-button>
       <div class="fileUpload">
         <ion-icon name="attach" color="primary"></ion-icon>
         <input class="upload" type="file" type="file" (change)="handleInputChange($event)" formControlName="file"

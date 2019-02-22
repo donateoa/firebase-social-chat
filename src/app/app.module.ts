@@ -1,4 +1,5 @@
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFireAuthModule} from '@angular/fire/auth';
@@ -50,14 +51,15 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
-    FacebookModule, ServicesModule, BrowserModule, IonicModule.forRoot(),
-    AppRoutingModule, MediaDetailPageModule,
+    HttpClientModule, FacebookModule, ServicesModule, BrowserModule,
+    IonicModule.forRoot(), AppRoutingModule, MediaDetailPageModule,
     AngularFireModule.initializeApp(environment.firebase_config),
     AngularFireAuthModule, FirebaseUIModule.forRoot(firebaseUiAuthConfig)
   ],
   providers: [
     AngularFireStorage,
     StatusBar,
+    HttpClient,
     FacebookService,
     SplashScreen,
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},

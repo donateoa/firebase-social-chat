@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- <ion-back-button text=""></ion-back-button> -->
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ng-container *ngIf="emoji">
+    <ion-button (click)="onTap(e)" *ngFor="let e of emoji" fill="clear">
+      {{e}}</ion-button>
+  </ng-container>
+</ion-content>
+<ion-footer>
+  <ion-item>
+    <ion-label>{{output}}</ion-label>
+    <ion-buttons slot="end">
+      <ion-button (click)="apply()" shape="round" color="secondary" fill="clear">
+        <ion-icon name="md-send"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-item>
+</ion-footer>
