@@ -13,7 +13,7 @@
           </ion-toolbar>
         </ion-header>
         <ion-content>
-          <ion-list>
+          <ion-list lines="none">
             <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
               <ion-item [routerDirection]="'root'" [routerLink]="[p.url]" routerLinkActive="active-link">
                 <ion-icon slot="start" [name]="p.icon"></ion-icon>

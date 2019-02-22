@@ -6,6 +6,7 @@ import {UserPostsService} from 'src/app/services/user-post.service';
 
 import {ProfilePage} from '../profile/profile.page';
 import {ProfileService} from '../profile/profile.service';
+import { ContactsService } from '../contacts/contacts.service';
 
 @Component({
   selector: 'app-myprofile',
@@ -16,11 +17,12 @@ export class MyprofilePage extends ProfilePage {
   changed = false;
   loading;
   constructor(
+    private contactServce: ContactsService,
       private toastService: ToastService,
       private loadingController: LoadingController,
       userPostsService: UserPostsService, profileService: ProfileService,
       activatedRoute: ActivatedRoute) {
-    super(userPostsService, profileService, activatedRoute, )
+    super(contactServce,userPostsService, profileService, activatedRoute, )
   }
   save() {
     this.presentLoading();

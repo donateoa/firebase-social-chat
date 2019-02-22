@@ -76,10 +76,30 @@
   --ion-color-light-tint: #f5f6f9;
 
   /** custom theme **/
-  --ion-background-color: #fff;
+  --ion-background-color: #eceef0;
   --ion-text-color: #454545;
   --ion-toolbar-background:var(--ion-color-primary);
   --ion-toolbar-color:var(--ion-color-primary-contrast);
+
+ion-card{
+  --background: #fff;
+  ion-item{
+    --background: #fff;
+  }
+  ion-card-title{
+    --background: #fff;
+    ion-item{
+      --background: #fff;
+    }
+  }
+  ion-list{
+    --background: #fff;
+    background:#fff;
+    ion-item{
+      --background: #fff;
+    }
+  }
+}
 
   .active-link{
     color:var(--ion-color-tertiary);
