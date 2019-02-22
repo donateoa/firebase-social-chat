@@ -48,9 +48,9 @@
         <ion-item lines="none">
           <ion-buttons slot="end">
             <ion-button (click)="addComment()" [disabled]="!comment">
-              <ion-icon name="md-send"></ion-icon>
+              <ion-icon slot="icon-only" name="md-send"></ion-icon>
             </ion-button>
-            <ion-button (click)="openEmoji()">😀</ion-button>
+            <ion-button slot="icon-only" (click)="openEmoji()" class="emoji-picker-button">😀</ion-button>
           </ion-buttons>
         </ion-item>
       </ion-list>

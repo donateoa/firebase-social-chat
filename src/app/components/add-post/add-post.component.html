@@ -12,12 +12,12 @@
     <ion-buttons slot="end">
       <ion-button (click)="sendPost()" [disabled]="validations_form.invalid" color="primary" size="small"
         class="responsive-button">
-        <ion-icon name="send"></ion-icon>
+        <ion-icon slot="icon-only" name="send"></ion-icon>
         <ion-label>Pubblica</ion-label>
       </ion-button>
-      <ion-button (click)="openEmoji()">😀</ion-button>
+      <ion-button slot="icon-only" (click)="openEmoji()" class="emoji-picker-button">😀</ion-button>
       <div class="fileUpload">
-        <ion-icon name="attach" color="primary"></ion-icon>
+        <ion-icon slot="icon-only" name="attach" color="primary"></ion-icon>
         <input class="upload" type="file" type="file" (change)="handleInputChange($event)" formControlName="file"
           accept=".png,.jpg" />
       </div>
