@@ -6,7 +6,6 @@ import {Query} from '@angular/fire/firestore';
 import * as firebase from 'firebase/app';
 import {Observable, Subject, from, of } from 'rxjs';
 import {map, tap} from 'rxjs/operators';
-import {PAGE_SIZE} from 'src/app.constants';
 import {IFilter} from 'src/app/components/entity-filter/entity-filter.model';
 import {RestInterface} from 'src/app/services/rest.interface';
 
@@ -91,7 +90,7 @@ export class RestService<T> implements RestInterface<T> {
         listRef = listRef.endBefore(this.firstVisible)
       }
       return Observable.create(subscriber => {
-        listRef.limit(PAGE_SIZE).onSnapshot((querySnapshot) => {
+        listRef.limit(filter.pageSize).onSnapshot((querySnapshot) => {
           querySnapshot.docChanges().forEach(change => {
             const O = this.mapToObj(change.doc.data());
             if (change.type === 'added') {
@@ -126,7 +125,7 @@ export class RestService<T> implements RestInterface<T> {
         listRef = listRef.startAfter(this.lastVisible)
       }
 
-      return from(listRef.limit(PAGE_SIZE).get())
+      return from(listRef.limit(filter.pageSize).get())
           .pipe(
               tap((t) => this.setLastVisible(t)),
               tap((t) => this.setFirstVisible(t)),

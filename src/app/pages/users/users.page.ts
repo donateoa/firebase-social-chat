@@ -7,6 +7,7 @@ import {map} from 'rxjs/operators';
 import {IFilter, SortType} from 'src/app/components/entity-filter/entity-filter.model';
 import {Principal} from 'src/app/services/Principal';
 
+import {ContactsService} from '../contacts/contacts.service';
 import {INotification} from '../notifications/notifications.model';
 
 import {IUser, User} from './user.model';
@@ -33,9 +34,13 @@ export class UsersPage implements OnInit {
     'user', 'paymentType', 'srId'
   ];
   constructor(
-      private usersService: UsersService, private principal: Principal) {}
+      private usersService: UsersService, private principal: Principal,
+      private contactsService: ContactsService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.contactsService.query(false, {pageSize: 20000})
+        .subscribe(data => console.log('contacts', data));
+  }
   changeFilter(criteria) {
     if (criteria.filter) {
       this.filter = criteria.filter;
