@@ -9,6 +9,7 @@ import {Principal} from 'src/app/services/Principal';
 import {PostService} from 'src/app/services/post.service';
 
 import {PostCommentsService} from './post-comments.service';
+import {EmojiPickerComponent} from '../emoji-picker/emoji-picker.component';
 
 @Component({
   selector: 'app-post',
@@ -79,5 +80,15 @@ export class PostComponent implements OnInit {
     const modal = await this.modalController.create(
         {component: MediaDetailPage, componentProps: {'media': media}});
     return await modal.present();
+  }
+  async openEmoji() {
+    const modal =
+        await this.modalController.create({component: EmojiPickerComponent});
+    await modal.present();
+    const {data} = await modal.onDidDismiss();
+    console.log(data);
+    if (data.output) {
+      this.comment = (this.comment ? this.comment : '') + data.output;
+    }
   }
 }

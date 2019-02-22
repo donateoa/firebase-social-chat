@@ -41,13 +41,16 @@
             </ion-button>
           </ion-buttons>
         </ion-item>
-        <ion-item>
+        <ion-item lines="full">
           <ion-label position="floating">Aggiungi un commento</ion-label>
           <ion-input type="textarea" (keyup)="onKey($event)" [(ngModel)]="comment"></ion-input>
+        </ion-item>
+        <ion-item lines="none">
           <ion-buttons slot="end">
             <ion-button (click)="addComment()" [disabled]="!comment">
               <ion-icon name="md-send"></ion-icon>
             </ion-button>
+            <ion-button (click)="openEmoji()">😀</ion-button>
           </ion-buttons>
         </ion-item>
       </ion-list>
