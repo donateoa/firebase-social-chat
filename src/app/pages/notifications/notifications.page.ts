@@ -33,7 +33,7 @@ export class NotificationsPage implements OnInit {
     // reset num of notification must be read
     const user = this.principal.identity();
     const docRef = firebase.firestore().doc(user.getNotificationsDocument());
-    docRef.set({'contact-notifications': 0}, {merge: true})
+    docRef.set({'contactNotifications': 0}, {merge: true})
         .then(() => console.log('reset num of message must be read'))
         .catch((e) => console.log('error during reset message', e));
   }
@@ -80,10 +80,10 @@ export class NotificationsPage implements OnInit {
     const data = {user: email};
     this.presentLoading();
     firebaseFunction(data)
-        .then(() => that.loadPage(false))
+        .then(() => this.list = this.list.filter(t => t.email != data.user))
         .then(() => {
           that.dismissLoading();
-          this.toastService.makeToastSuccess('Operazione completata')
+          this.toastService.makeToastSuccess('Operazione completata');
         })
         .catch(err => {
           console.log(err);

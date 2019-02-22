@@ -1,8 +1,6 @@
 import {IUser} from '../users/user.model';
 
-export interface INotification {
-  uid?: string;
-  userFrom?: IUser;
+export interface INotification extends IUser {
   type?: string;
   creationDate?: any;
 }
