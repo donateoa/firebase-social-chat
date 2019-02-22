@@ -88,7 +88,7 @@ export class RestService<T> implements RestInterface<T> {
           listRef = listRef.orderBy(filter.field, filter.sort);
         }
       }
-      if (next) {
+      if (next && this.firstVisible) {
         listRef = listRef.endBefore(this.firstVisible)
       }
       return Observable.create(subscriber => {
